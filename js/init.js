@@ -34,7 +34,7 @@
             }
             text += line.substring(loffset) + "\n";
         }
-        text = text.replace(/['"&<>]/g, function(x) { return { '"': '&quot;', "'": '&apos;', '<': '&lt;', '>': '&gt;' }[x] });
+        text = text.replace(/['"<>]/g, function(x) { return { '"': '&quot;', "'": '&apos;', '<': '&lt;', '>': '&gt;' }[x] });
         var c = document.createElement('code');
         c.innerHTML = text;
         if (s.getAttribute("lang")) {

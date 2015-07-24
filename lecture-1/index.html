@@ -1,17 +1,18 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <title>Shower Presentation Engine</title>
+    <title>WEB технологии</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=792, user-scalable=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <link rel="stylesheet" href="../node_modules/shower-bright/styles/screen.css">
     <link rel="stylesheet" href="../css/highlight/github.css">
+    <link rel="stylesheet" href="../css/index.css">
 </head>
 <body class="list">
     <header class="caption">
         <h1>WEB технологии</h1>
-        <p><a href="https://github.com/mialinx/">Dmitry Smal</a></p>
+        <p><a href="https://github.com/mialinx/">Дмитрий Смаль</a></p>
     </header>
 
     <section class="slide shout"><div>
@@ -71,36 +72,219 @@
     </div></section>
 
     <section class="slide"><div>
-        <h2>Код Python</h2>
-        <script type="snippet" lang="python">
-            def code(a, b):
-                return a + b
+        <h2>World Wide Web</h2>
+        <p>WWW - множество <b>взаимосвязанных документов</b>, располагающихся на машинах подключенных к Internet</p>
+        <p>WWW - набор протоколов, серверного и клиентского ПО, позволяющих получать доступ к документам</p>
+    </div></section>
+
+    <section class="slide"><div>
+        <img src="pictures/network.png"/>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Документы</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Типы документов (MIME-типы)</h2>
+        <table class="clean"><tr><td>
+            <ul>
+                <li>text/html</li>
+                <li>text/css</li>
+                <li>text/javascript</li>
+                <li>image/png</li>
+            </ul>
+        </td><td>
+            <ul>
+                <li>video/mp4</li>
+                <li>text/xml</li>
+                <li>application/json</li>
+                <li><a href="http://www.iana.org/assignments/media-types/media-types.xhtml">Полный список MIME типов</a></li>
+            </ul>
+        </td></tr></table>
+        <p><small>Расширения файлов играют второстепенную роль</small></p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>text/html</h2>
+        <script type="snippet" lang="html">
+            <html>
+                <body>
+                    <link rel="stylesheet" href="/css/style.css">
+                    <script src="http://code.jquery.com/jquery-2.1.4.js">
+                    </scr&#8203;ipt>
+                    <p>Some text with <img src="pic/img1.png"> and <a href="#yes">hyperlinks</a></p>
+                </body>
+            </html>
         </script>
     </div></section>
 
     <section class="slide"><div>
-        <h2>Код JSON</h2>
-        <script type="snippet" lang="javascript">
+        <h2>text/css</h2>
+        <script type="snippet" lang="css">
+            .hljs-subst,
+            .hljs-title,
+            .json .hljs-value {
+              font-weight: normal;
+              color: #000;
+            }
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>text/xml</h2>
+        <script type="snippet" lang="xml">
+            <response status="ok">
+                <friends>
+                    <friend id="1" name="v.pupkin"/>
+                    <friend id="2" name="a.pushkin"/>
+                    <friend id="3" name="n.tesla"/>
+                </friends>
+            </response>
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>application/json</h2>
+        <script type="snippet" lang="json">
             {
-                "status":"ok",
+                "status": "ok",
                 "friends": [
-                    { "name": "pupkin", "id": 10 },
-                    { "name": "pupkin", "id": 11 },
-                    { "name": "pupkin", "id": 12 }
+                    { "id": 1, "name": "v.pupkin" },
+                    { "id": 2, "name": "a.pushkin" },
+                    { "id": 3, "name": "n.tesla" }
                 ]
             }
         </script>
     </div></section>
 
     <section class="slide"><div>
-        <h2>Код HTML</h2>
+        <h2>Документы могут быть</h2>
+        <ul>
+            <li><b>Статические</b>
+                <ul>
+                    <li>Это файлы на дисках сервера</li>
+                    <li>Как правило, обладают постоянным адресом</li>
+                </ul>
+            </li>
+            <li><b>Динамические</b>
+                <ul>
+                    <li>Создаются на каждый запрос</li>
+                    <li>Содержимое зависит от времени и пользователя</li>
+                    <li>Адрес может быть постоянным или меняться</li>
+                </ul>
+            </li>
+        </ul>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>URL</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>URL - unified resource locator</h2>
+        <code>http://server.org:8080/path/doc.html?a=1&b=2#part1</code>
+        <ul>
+            <li>http - протокол<br></li>
+            <li>server.org - DNS имя сервера<br></li>
+            <li>8080 - TCP порт<br></li>
+            <li>/path/doc.html - путь к файлу<br></li>
+            <li>a=1&b=2 - опции запроса<br></li>
+            <li>part1 - якорь, положение на странице<br></li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Абсолютные и относительные URL</h2>
+        <ul>
+            <li><code>http://server.org/1.html</code> - абсолютный</li>
+            <li><code>//server.org/1.html</code> - абсолютный (schemeless)</li>
+            <li><code>/another/page.html?a=1</code> - относительный (в пределах домена)</li>
+            <li><code>pictures/1.png</code> - относительный (от URL текущего документа)</li>
+            <li><code>?a=1&amp;b=2</code> - относительный (от URL текущего документа)</li>
+            <li><code>#part2</code> - относительный (в пределах текущего документа)</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Правила разрешения URL</h2>
+        <code>https://site.com/path/page.html</code> - основной документ<br>
+        + <code>http://wikipedia.org</code> = <code>http://wikipedia.org</code><br>
+        + <code>//cdn.org/jquery.js</code> = <code><b>https</b>://cdn.org/jquery.js</code><br>
+        + <code>/admin/index.html</code> = <code><b>https://site.com</b>/admin/index.html</code><br>
+        + <code>another.html</code> = <code><b>https://site.com/path/</b>another.html</code><br>
+        + <code>?full=1</code> = <code><b>https://site.com/path/page.html</b>?full=1</code><br>
+        + <code>#chapter2</code> = <code><b>https://site.com/path/page.html</b>#chaprer2</code><br>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Как документы могут ссылаться друг на друга?</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>HTML - гиперссылки</h2>
         <script type="snippet" lang="html">
-            <form>
-                <button type="submit">Ok</button> 
+            Список товаров в <a href="/cart.php">корзине</a>
+        </script>
+        <p>Список товаров в <a href="/cart.php">корзине</a></p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>HTML - формы</h2>
+        <script type="snippet" lang="html">
+            <form action="https://duckduckgo.com/">
+                <input type="text" name="q" value="">
+                <input type="hidden" name="ia" value="images">
+                <button type="submit">Найти</a>
             </form>
+        </script>
+        <form action="https://duckduckgo.com/">
+            <input type="hidden" name="ia" value="images">
+            <input type="text" name="q" value="">
+            <button type="submit">Найти</a>
+        </form>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>HTML - ресурсы</h2>
+        <script type="snippet" lang="html">
+            <link rel="stylesheet" href="/css/index.css">
+            <script src="http://code.jquery.com/jquery-2.1.4.js">
+            </scr&#8203;ipt>
+            <img src="pictures/network.png" width="200" >
+        </script>
+        <link rel="stylesheet" href="/css/style.css">
+        <script src="http://code.jquery.com/jquery-2.1.4.js"></script>
+        <img src="pictures/network.png" width="200" >
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>CSS - ресурсы</h2>
+        <script type="snippet" lang="css">
+            .slide {
+                background-image: url(../pictures/network.png)
+            }
+            @font-face {
+                font-family: Terminus;
+                src: url(fonts/terminus.ttf);
+            }
         </script>
     </div></section>
 
+    <section class="slide"><div>
+        <h2>JavaScript - прямое указание URL</h2>
+        <script type="snippet" lang="javascript">
+            var saveApiUrl = '/items/save/';
+            var newTitle = 'Duck tales';
+            $.ajax({
+                type: 'POST',
+                url:  saveApiUrl,
+                data: { id: 10, title: newTitle }
+            });
+        </script>
+    </div></section>
+
+    <!-- http://www.evolutionoftheweb.com -->
     <div class="progress"><div></div></div>
     <script src="../js/highlight.pack.js"></script>
     <script src="../node_modules/shower-core/shower.min.js"></script>
