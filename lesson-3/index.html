@@ -114,14 +114,51 @@
     </div></section>
 
     <section class="slide"><div>
-        <h2>Ключевые особенности браузеров</p>
+        <h2>Сценарий работы web приложения</h2>
         <ul>
-            <li>Отображение гипертекстовых документов HTML + CSS</li>
-            <li>Предоставляют среду выполнения JavaScript</li>
-            <li>Гарантируют определенный уровень безопасности для 
+            <li>Пользователь вводит URL</li>
+            <li>Браузер загружает Web страницу - HTML документ</li>
+            <li>Браузер анализурет (parse) HTML и загружает доп. ресурсы</li>
+            <li>Браузер отображает (rendering) HTML страницу</li>
+            <li>Пользователь переходит по гиперссылке или отправляет форму</li>
+            <li>Цикл повторяется</li>
         </ul>
     </div></section>
+
+    <section class="slide"><div>
+        <img src="pictures/classic_web.png" class="place">
+    </div></section>
     
+    <section class="slide"><div>
+        <h2>TODO: подробнее, как происходит HTTP запрос.</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Сценарий работы современного приложения</h2>
+        <ul>
+            <li>Браузер загружает Web страницу, ресурсы и отображает ее</li>
+            <li>JavaScript загружает данные с помощью AJAX запросов</li>
+            <li>JavaScript обеспечивает полноценный UI на странице</li>
+            <li>Пользователь взаимодействуюет с UI, что приводит к вызову JavaScript обработчиков</li>
+            <li>JavaScript обновляет данные на сервер или загружает новые данные, используя AJAX</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <img src="pictures/modern_web.png" class="place">
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Особенности современных Web-приложений</h2>
+        <ul>
+            <li>UI находится на 1 или нескольких страницах (one-page)</li>
+            <li>UI польностью статичен: HTML, CSS, JS - статические файлы</li>
+            <li>Логика UI полностью работает на стороне клиента</li>
+            <li>Используется шаблонизация в JavaScript</li>
+            <li>Application сервер возвращает чистые данные (JSON или XML а не HTML)</li>
+        </ul>
+    </div></section>
+
     <div class="progress"><div></div></div>
     <script src="../js/highlight.pack.js"></script>
     <script src="../node_modules/shower-core/shower.min.js"></script>
