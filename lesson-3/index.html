@@ -130,10 +130,6 @@
     </div></section>
     
     <section class="slide"><div>
-        <h2>TODO: подробнее, как происходит HTTP запрос.</h2>
-    </div></section>
-
-    <section class="slide"><div>
         <h2>Сценарий работы современного приложения</h2>
         <ul>
             <li>Браузер загружает Web страницу, ресурсы и отображает ее</li>
@@ -158,6 +154,62 @@
             <li>Application сервер возвращает чистые данные (JSON или XML а не HTML)</li>
         </ul>
     </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Что происходит при HTTP запросе ?</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Web-клиент определяет IP адрес сервера</h2>
+        <ul>
+            <li>Анализирует введенный URL и извлекает имя хоста</li>
+            <li>UI польностью статичен: HTML, CSS, JS - статические файлы</li>
+            <li>Логика UI полностью работает на стороне клиента</li>
+            <li>Используется шаблонизация в JavaScript</li>
+            <li>Application сервер возвращает чистые данные (JSON или XML а не HTML)</li>
+        </ul>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>DNS</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Domain Name System</h2>
+        <p>DNS - это распределенная база данных, хранящая информацию о доменах, в первую очередь
+           отображение доменных имен на IP адреса машин, обслуживающих эти домены</p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Пространство доменных имен</h2>
+        <img src="pictures/domains.png" >
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Домены и зоны</h2>
+        <p>База DNS разделена на <b>зоны</b>. Каждая зона находится под единым административным контролем. 
+           Проще говоря обслуживается одной организацией.</p>
+        <p>Хранение информации о доменах более высокого уровня может быть <b>делегировано</b> другим зонам.</p>
+    </div></section>
+
+    <section class="slide"><div>
+        <img src="pictures/zones.png" class="place" >
+    </div></section>
+
+    <section class="slide"><div>
+        <img src="pictures/dnsreq.png" class="place" >
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Что содержит зона DNS сервера ?</h2>
+        <ul>
+            <li>A - IPv4 адрес(а) для данного домена</li>
+            <li>AAAA - IPv6 адрес(а)</li>
+            <li>NS - адрес(a) DNS серверов обслуживающих данную зону</li>
+            <li>MX - адрес(а) почтовых серверов для данного домена</li>
+        </ul>
+    </div></section>
+
 
     <div class="progress"><div></div></div>
     <script src="../js/highlight.pack.js"></script>
