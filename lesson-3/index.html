@@ -16,215 +16,121 @@
     </header>
 
     <section class="slide shout"><div>
-        <h2>HTTP</h2>
+        <h2>Что происходит при HTTP запросе ?</h2>
     </div></section>
 
     <section class="slide"><div>
-        <h2>Какие задачи решает HTTP?</h2>
         <ul>
-            <li>Передача документов</li>
-            <li>Передача мета-информации</li>
-            <li>Авторизация</li>
-            <li>Поддержка сессий</li>
-            <li>Кеширование документов</li>
-            <li>Согласование содержимого (negotiation)</li>
-            <li>Управление соединением</li>
+            <li>Анализирует введенный URL и извлекает имя хоста</li>
+            <li>Используя систему DNS преобразует домен в ip адрес web-сервера</li>
+            <li>Устанавливает TCP соединение с web-серверов</li>
+            <li>Если протокол https, устанавливает TLS соединение поверх TCP</li>
+            <li>Формирует HTTP запрос, отправляет его, получает документ</li>
+            <li>Браузер закрывает соединение (для HTTP/1.0)</li>
+            <li>Браузер загружает связанные ресурсы</li>
         </ul>
     </div></section>
 
     <section class="slide"><div>
-        <img src="pictures/netflow.png" class="place"/>
+        <img src="pictures/stack.png" class="place" >
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>DNS</h2>
     </div></section>
 
     <section class="slide"><div>
-        <h2>Ключевые особенности HTTP</h2>
+        <h2>Domain Name System</h2>
+        <p>DNS - это распределенная база данных, хранящая информацию о доменах, в первую очередь
+           отображение доменных имен на IP адреса машин, обслуживающих эти домены</p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Пространство доменных имен</h2>
+        <img src="pictures/domains.png" >
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Домены и зоны</h2>
+        <p>База DNS разделена на <b>зоны</b>. Каждая зона находится под единым административным контролем. 
+           Проще говоря обслуживается одной организацией.</p>
+        <p>Хранение информации о доменах более высокого уровня может быть <b>делегировано</b> другим зонам.</p>
+    </div></section>
+
+    <section class="slide"><div>
+        <img src="pictures/zones.png" class="place" >
+    </div></section>
+
+    <section class="slide"><div>
+        <img src="pictures/dnsreq.png" class="place" >
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Что содержит зона DNS сервера ?</h2>
         <ul>
-            <li>Работает поверх TCP/TLS</li>
-            <li>Протокол запрос-ответ</li>
-            <li>Не поддерживает состояние (соединение) - <b>stateless</b></li>
-            <li><b>Текстовый</b> протокол</li>
-            <li>Расширяемый протокол</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>HTTP/1.0 запрос</h2>
-        <script type="snippet" lang="plain">
-            GET http://www.ru/robots.txt HTTP/1.0
-            Accept: text/html, text/plain
-            User-Agent: telnet/hands
-            If-Modified-Since: Fri, 24 Jul 2015 22:53:05 GMT
-        </script>
-        <p>Перевод строки - <code>\r\n</code></p>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>HTTP/1.1 запрос</h2>
-        <script type="snippet" lang="plain">
-            GET /robots.txt HTTP/1.1        
-            Accept: text/html,application/xhtml+xml
-            Accept-Encoding: gzip, deflate
-            Cache-Control: max-age=0
-            Connection: keep-alive
-            Host: www.ru
-            User-Agent: Mozilla/5.0 Gecko/20100101 Firefox/39.0
-        </script>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>HTTP/1.1 ответ</h2>
-        <script type="snippet" lang="plain">
-            HTTP/1.1 404 Not Found
-            Server: nginx/1.5.7
-            Date: Sat, 25 Jul 2015 09:58:17 GMT
-            Content-Type: text/html; charset=iso-8859-1
-            Connection: close
-
-            <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
-            <HTML><HEAD>...
-        </script>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>HTTP запрос состоит из</h2>
-        <ul>
-            <li>строка запроса
-                <ul>
-                    <li>метод</li>
-                    <li>URL документа</li>
-                    <li>версия</li>
-                </ul>
-            </li>
-            <li>заголовки</li>
-            <li>тело запроса</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>HTTP методы</h2>
-        <ul>
-            <li><b>GET</b> - получение документа</li>
-            <li><b>HEAD</b> - получение только заголовков</li>
-            <li><b>POST</b> - отправка данных на сервер</li>
-            <li>PUT - отправка документа на сервер (*)</li>
-            <li>DELETE - удаление документа (*)</li>
-            <li>CONNECT, TRACE, OPTIONS - используются редко (*)</li>
-            <li>COPY, MOVE, MKCOL - расширения WebDAV (*)</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>HTTP ответ состоит из</h2>
-        <ul>
-            <li>строка ответа
-                <ul>
-                    <li>метод</li>
-                    <li>URL документа</li>
-                    <li>версия</li>
-                </ul>
-            </li>
-            <li>заголовки</li>
-            <li>тела ответа - документ</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>HTTP коды ответа</h2>
-        <ul>
-            <li>1xx - информационные</li>
-            <li>2xx - успешное выполнение</li>
-            <li>3xx - перенаправления</li>
-            <li>4xx - ошибка на стороне клиента</li>
-            <li>5xx - ошибка на стороне сервера</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>HTTP коды ответа (1)</h2>
-        <ul>
-            <li>200 OK - запрос успешно выполнен</li>
-            <li>204 No Content - запрос успешно выполнен, но документ пуст</li>
-            <li>301 Moved Permanently - докумет сменил URL</li>
-            <li>302 Found - повторить запрос по другому URL</li>
-            <li>304 Not Modified - документ не изменился, использовать кеш</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>HTTP коды ответа (2)</h2>
-        <ul>
-            <li>400 Bad Request - неправильный синтаксис запроса</li>
-            <li>401 Unauthorized - требуется авторизация</li>
-            <li>403 Forbidden - нет доступа (неверная авторизация)</li>
-            <li>404 Not Found - документ не найден</li>
-            <li>500 Internal Server Error - неожиданная ошибка сервера (application)</li>
-            <li>502 Bad Gateway - проксируемый отвечает с ошибкой</li>
-            <li>504 Gateway Timeout - проксируемый сервер не отвечает</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Заголвки HTTP (общие)</h2>
-        <p>Для управление соединением и форматом сообщения (документа)</p>
-        <ul>
-            <li>Content-Type - MIME тип документа</li>
-            <li>Content-Length - длинна сообщения</li>
-            <li>Content-Encoding - кодирование документа, например gzip-сжатие</li>
-            <li>Transfer-Encoding - формат передачи, например, chunked</li>
-            <li>Connection - управление соединением</li>
-            <li>Upgrade - смена протокола</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Заголвки HTTP запросов</h2>
-        <ul>
-            <li>Authorization - авторизация, чаще всего логин/пароль</li>
-            <li>Cookie - передача состояния (сессии) на сервер</li>
-            <li>Referer - URL предыдущего документа, контекст запроса</li>
-            <li>User-Agent - описание web-клиента, версия браузера</li>
-            <li>If-Modified-Since - условный GET запрос</li>
-            <li>Accept-* - согласование (negotiation) содержимого</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Заголвки HTTP ответов</h2>
-        <ul>
-            <li>Location - новый URL документа при перенаправлениях</li>
-            <li>Set-Cookie - установка состояния (сессии) в браузере</li>
-            <li>Last-Modified - дата последнего изменения документа</li>
-            <li>Date - Дата на сервере, для согласования кешей</li>
-            <li>Server - описание web-сервера, название и версия</li>
+            <li>A - IPv4 адрес(а) для данного домена</li>
+            <li>AAAA - IPv6 адрес(а)</li>
+            <li>NS - адрес(a) DNS серверов обслуживающих данную зону</li>
+            <li>MX - адрес(а) почтовых серверов для данного домена</li>
         </ul>
     </div></section>
 
     <section class="slide shout"><div>
-        <h2>HTTP/1.1 управление соединением</h2>
+        <h2>TCP</h2>
     </div></section>
 
     <section class="slide"><div>
-        <img src="pictures/netflow2.png" class="place"/>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Общие принципы</h2>
-        <p>Протокол HTTP/1.0 предполгает закрытие TCP соединения сразу после ответа серваер.</p>
-        <p>Протокол HTTP/1.1 предполгает удержание TCP соединения, если не было заголовка <code>Connection: close</code>.</p>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Логика управления в HTTP/1.1</h2>
-        <p>Соединение должно быть закрыто, если:</p>
+        <h2>Зачем нужен TCP ?</h2>
+        <p>TCP - протокол, обеспечивающий надежную последовательную доставку данных. 
+        Фактически, TCP предоставляет интерфейс похожий на файловый ввод/вывод для сетевых соединений.</p>
         <ul>
-            <li>cервер или клиент испольузет HTTP младше 1.1</li>
-            <li>cервер или клиент передал заголовок <code>Connection: close</code></li>
-            <li>по истечении таймаута (обычно небольшой, около 10с)</li>
+            <li>Надежная доставка</li>
+            <li>Полнодуплексная передача</li>
+            <li>Контроль потока - защита от переполнения</li>
         </ul>
-        <p>Иначе соединение остается открытым для последующих запросов.</li>
     </div></section>
-    
-    <!-- http://www.evolutionoftheweb.com -->
+
+    <section class="slide"><div>
+        <h2>Установление TCP соединения</h2>
+        <img src="pictures/tcp.png">
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Пример TCP клиента</h2>
+        <script type="snippet" lang="python">
+            import socket
+            req = "Hello tcp!"
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect(('127.0.0.1', 1234))
+            s.send(req)
+            rsp = s.recv(1024)
+            s.close()
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Пример TCP сервера</h2>
+        <script type="snippet" lang="python">
+            import socket
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.bind(('127.0.0.1', 1234))
+            s.listen(10)
+            while True:
+                conn, addr = s.accept()
+                while True:
+                    data = conn.recv(1024)
+                    if not data: break
+                    conn.send(data)
+                conn.close()
+        </script>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>TLS</h2>
+    </div></section>
+
+    <!-- TODO: -->
+
     <div class="progress"><div></div></div>
     <script src="../js/highlight.pack.js"></script>
     <script src="../node_modules/shower-core/shower.min.js"></script>
