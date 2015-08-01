@@ -160,14 +160,19 @@
     </div></section>
 
     <section class="slide"><div>
-        <h2>Web-клиент определяет IP адрес сервера</h2>
         <ul>
             <li>Анализирует введенный URL и извлекает имя хоста</li>
-            <li>UI польностью статичен: HTML, CSS, JS - статические файлы</li>
-            <li>Логика UI полностью работает на стороне клиента</li>
-            <li>Используется шаблонизация в JavaScript</li>
-            <li>Application сервер возвращает чистые данные (JSON или XML а не HTML)</li>
+            <li>Используя систему DNS преобразует домен в ip адрес web-сервера</li>
+            <li>Устанавливает TCP соединение с web-серверов</li>
+            <li>Если протокол https, устанавливает TLS соединение поверх TCP</li>
+            <li>Формирует HTTP запрос, отправляет его, получает документ</li>
+            <li>Браузер закрывает соединение (для HTTP/1.0)</li>
+            <li>Браузер загружает связанные ресурсы</li>
         </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <img src="pictures/stack.png" class="place" >
     </div></section>
 
     <section class="slide shout"><div>
@@ -210,6 +215,55 @@
         </ul>
     </div></section>
 
+    <section class="slide shout"><div>
+        <h2>TCP</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Зачем нужен TCP ?</h2>
+        <p>TCP - протокол, обеспечивающий надежную последовательную доставку данных. 
+        Фактически, TCP предоставляет интерфейс похожий на файловый ввод/вывод для сетевых соединений.</p>
+        <ul>
+            <li>Надежная доставка</li>
+            <li>Полнодуплексная передача</li>
+            <li>Контроль потока - защита от переполнения</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Установление TCP соединения</h2>
+        <img src="pictures/tcp.png">
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Пример TCP клиента</h2>
+        <script type="snippet" lang="python">
+            import socket
+            req = "Hello tcp!"
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect(('127.0.0.1', 1234))
+            s.send(req)
+            rsp = s.recv(1024)
+            s.close()
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Пример TCP сервера</h2>
+        <script type="snippet" lang="python">
+            import socket
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.bind(('127.0.0.1', 1234))
+            s.listen(10)
+            while True:
+                conn, addr = s.accept()
+                while True:
+                    data = conn.recv(1024)
+                    if not data: break
+                    conn.send(data)
+                conn.close()
+        </script>
+    </div></section>
 
     <div class="progress"><div></div></div>
     <script src="../js/highlight.pack.js"></script>
