@@ -122,11 +122,11 @@
 
 
 
+РАСШИРЕНИЯ ПРОТОКОЛА HTTP!!!
+HTTP/2.0 и SPDY
+cookie и сессии (!!!)
+
 Важно осветить темы:
 caching
 proxy
-cookie и сессии (!!!)
-referer
 
-РАСШИРЕНИЯ ПРОТОКОЛА HTTP!!!
-HTTP/2.0 и SPDY

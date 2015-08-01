@@ -125,8 +125,68 @@
         </script>
     </div></section>
 
+    <section class="slide"><div>
+        <h2>Как правильно читать данные из сокета ?</h2>
+        <script type="snippet" lang="python">
+            def myreceive(sock, msglen):
+                msg = ''
+                while len(msg) < msglen:
+                    chunk = sock.recv(msglen-len(msg))
+                    if chunk == '':
+                        raise RuntimeError("broken")
+                    msg = msg + chunk
+                return msg
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Как правильно записывать данные в сокет ?</h2>
+        <script type="snippet" lang="python">
+            def mysend(sock, msg):
+                totalsent = 0
+                while totalsent < len(msg):
+                    sent = sock.send(msg[totalsent:])
+                    if sent == 0:
+                        raise RuntimeError("broken")
+                    totalsent = totalsent + sent
+        </script>
+    </div></section>
+
+
     <section class="slide shout"><div>
         <h2>TLS</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>TLS - Transport Layer Security</h2>
+        <p>TLS (а ранее SSL) - криптографический протокол обеспечивающий безопасную передачу данных между хостами в Internet.</p>
+        <ul>
+            <li>Аутентификация сервера (и клиента)</li>
+            <li>Шифрование и сжатие пердаваемой информации</li>
+            <li>Защита от подмены и проверка целостности сообщений</li>
+        </ul>
+    </div></section>
+    
+    <section class="slide"><div>
+        <h2>Установление TLS соединения</h2>
+        <img src="pictures/tls.png">
+    </div></section>
+
+    <section class="slide"><div>
+        <ul>
+            <li>ClientHello - клиент указывает желаемые опции соединения</li>
+            <li>ServerHello - сервер подтверждает опции соединения</li>
+            <li>Certificate - сервер посылает клиенту свой сертификат</li>
+            <li>Клиент проверяет сертификат. <br>На данном этапе соединение может быть отклонено</li>
+            <li>ClientKeyExchange - клиент отправляет серверу ключ симметричного шифрования (или параметры для его генерации)</li>
+            <li>Finished - сервер поддверждает завершение рукопожатия</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Неутешительный вывод</h2>
+        <p>Установление TCP и TLS соединения требует существенное время. Минимум 1 RTT для TCP соединения и 1-2 RTT для TLS соединения.</p>
+        <p>Под RTT понимается Round Trip Time - время необходимое для передачи IP дейтограммы к серверу и обратно.</p>
     </div></section>
 
     <!-- TODO: -->
