@@ -1,4 +1,15 @@
-table.clean td, table.clean th { background: none !important }
 .slide pre { margin: 0px !important }
 .slide pre code { line-height: 1.4 }
 
+.lr { float: left; width: 100% }
+.lr::after { clear: both }
+.lr>* {float :left }
+.c1 { width: 10% }
+.c2 { width: 20% }
+.c3 { width: 30% }
+.c4 { width: 40% }
+.c5 { width: 50% }
+.c6 { width: 60% }
+.c7 { width: 70% }
+.c8 { width: 80% }
+.c9 { width: 90% }
