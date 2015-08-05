@@ -45,6 +45,19 @@
     </div></section>
     
     <section class="slide"><div>
+        <h2>Где могут быть заданы стили?</h2>
+        <ul>
+            <li>Встроенные в браузер стили</li>
+            <li>Во внешнем файле<br>
+                <code>&lt;link rel="stylesheet" href="style.css"&gt;</code></li>
+            <li>В коде HTML документа<br>
+                <code>&lt;style&gt;...&lt;/style&gt;</code></li>
+            <li>Стили могут быть привязаны к конкретному тэгу<br>
+                <code>&lt;img style="margin: 3px" src="..."&gt;</code></li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
         <h2>Какие бывают стили ?</h2>
         <ul>
             <li><code>width</code>, <code>height</code> ― размеры элемента</li>
@@ -55,6 +68,10 @@
             <li><code>font</code> ― управление шрифтом</li>
             <li><code>text-align</code> ― выравнивание текста</li>
         </ul>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>CSS селекторы</h2>
     </div></section>
 
     <section class="slide"><div>
@@ -103,7 +120,6 @@
         </ul>
     </div></section>
 
-
     <section class="slide"><div>
         <h2>Псевдоклассы</h2>
         <ul id="demo">
@@ -116,6 +132,24 @@
         <style>
             #demo li:first-child { color: red }
         </style>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Псевдоэлементы</h2>
+        <ul>
+            <li><code>#el:after</code> ― виртуальный элемент сразу после <code>#el</code></li>
+            <li><code>#el:before</code> ― виртуальный элемент непосредственно перед <code>#el</code></li>
+        </ul>
+        <script type="snippet" type="css">
+            .jack-sparrow:before {
+                content: "Captain ";
+                display: inline;
+            }
+        </script>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Наследование и приоритеты</h2>
     </div></section>
 
     <section class="slide"><div>
@@ -132,19 +166,6 @@
             </body> 
         </script>
         <p>Не все стили наследуются.</p>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Где могут быть заданы стили?</h2>
-        <ul>
-            <li>Встроенные в браузер стили</li>
-            <li>Во внешнем файле<br>
-                <code>&lt;link rel="stylesheet" href="style.css"&gt;</code></li>
-            <li>В коде HTML документы<br>
-                <code>&lt;style&gt;...&lt;/style&gt;</code></li>
-            <li>Стили могут быть привязаны к конкретному тэгу<br>
-                <code>&lt;img style="margin: 3px" src="..."&gt;</code></li>
-        </ul>
     </div></section>
 
     <section class="slide"><div>
@@ -166,13 +187,17 @@
         а селектор <code>li.red.level</code> специфичностью 21 балл</p>
     </div></section>
 
+    <section class="slide shout"><div>
+        <h2>Отображение элементов</h2>
+    </div></section>
+
     <section class="slide"><div>
         <h2>Режимы отображения элементов</h2>
         <ul>
             <li><code>display: none</code> ― элемент невидим, не занимает места</li>
             <li><code>display: block</code> ― элемент занимает максимальную ширину, начинается с новой строки, учитывает width, height</li>
             <li><code>display: inline</code> ― элемент занимает минимальную ширину, и не прерывает строку, игнорирует width, height</li>
-            <li><code>display: inline-block</code> ― блочный элемент, но не разрывает строку, примерно как img</li>
+            <li><code>display: inline-block</code> ― блочный элемент, но не разрывает строку, примерно как <code>img</code></li>
         </ul>
     </div></section>
 
@@ -275,6 +300,10 @@
             <li><code>position: fixed</code> ― относительно окна браузера</li>
             <li><code>top/right/bottom/left</code> - отступы, могут быть отрицательными</li>
         </ul>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Отступы и box-model</h2>
     </div></section>
 
     <section class="slide"><div>
