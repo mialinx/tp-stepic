@@ -13,3 +13,12 @@
 .c7 { width: 70% }
 .c8 { width: 80% }
 .c9 { width: 90% }
+
+img.center {
+    display: block;
+    margin: auto;
+}
+
+plus, minus { display: list-item; list-style-type: none; }
+plus:before { display: inline; content: "➕"; font-weight: bold; margin-right: 0.5em; color: green }
+minus:before { display: inline; content: "➖"; font-weight: bold; margin-right: 0.5em; color: red }
