@@ -37,6 +37,22 @@
     </div></section>
 
     <section class="slide"><div>
+        <h2>Reverse proxy</h2>
+        <ul>
+            <li>frontend (медленно) читает запрос от клиента</li>
+            <li>frontend (быстро) передает запрос свободному backend</li>
+            <li>backend генерирует страницу</li>
+            <li>backend (быстро) возвращает ответ frontend серверу</li>
+            <li>frontend (медленно) возвращает ответ клиенту</li>
+        </ul>
+        Результат: backend занят минимально возможное время.
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Настройка проксирования в nginx</h2>
+    </div></section>
+    
+    <section class="slide"><div>
         <h2>Настройка проксирования в nginx</h2>
         <script type="snippet" lang="plain">
             proxy_set_header Host      $host;
@@ -66,6 +82,10 @@
         </script>
     </div></section>
 
+    <section class="slide shout"><div>
+        <h2>Application сервер</h2>
+    </div></section>
+
     <section class="slide"><div>
         <h2>Backend (application) сервер</h2>
         <p>Роль application сервера заключается в исполнении бизнес логики приложения и генерации динамических документов.</p>
@@ -82,6 +102,10 @@
             <li>SCGI</li>
             <li>PSGI, <b>WSGI</b>, Rack</li>
         </ul>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>CGI</h2>
     </div></section>
 
     <section class="slide"><div>
@@ -112,6 +136,10 @@
         </ul>
     </div></section>
 
+    <section class="slide shout"><div>
+        <h2>FastCGI и SCGI</h2>
+    </div></section>
+
     <section class="slide"><div>
         <h2>FastCGI и SCGI</h2>
         <p>Основная проблема CGI - низкая производительность. Протоколы FastCGI и SCGI 
@@ -122,6 +150,10 @@
 
     <section class="slide"><div>
         <img src="pictures/fastcgi.png" class="place">
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>WSGI</h2>
     </div></section>
 
     <section class="slide"><div>
@@ -177,6 +209,21 @@
         <img src="pictures/wsgi.png">
     </div></section>
 
+    <section class="slide"><div>
+        <h2>Что ложится на приложение ?</h2>
+        <ul>
+            <li>Анализ <code>PATH_INFO</code> и выбор конкретного обработчика</li>
+            <li>Разбор конкретных заголовков, например <code>Cookie</code></li>
+            <li>Разбор <code>QUERY_STRING</code></li>
+            <li>Разбор тела запроса:
+                <ul>
+                    <li>x-www-form-urlencoded</li>
+                    <li>multipart/form-data</li>
+                </ul>
+            </li>
+            <li>Вывод правильных заголовков ответа</li>
+        </ul>
+    </div></section>
 
     <div class="progress"><div></div></div>
     <script src="../js/highlight.pack.js"></script>
