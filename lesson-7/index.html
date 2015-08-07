@@ -438,11 +438,48 @@
     <section class="slide"><div>
         <h2>WSGI - обработчик</h2>
         <script type="snippet" lang="python">
-
-                TODO: from here
-
+            def wsgi_application(environ, start_response):
+                # бизнес-логика 
+                status = '200 OK'
+                headers = [
+                    ('Content-Type', 'text/plain')
+                ] 
+                body = 'Hello, world!' 
+                start_response(status, headers )
+                return [ body ]
         </script>
     </div></section>
+
+    <section class="slide"><div>
+        <h2>Web Server Gateway Interface</h2>
+        <ul>
+            <li>Обработчик - функция или класс (callable)</li>
+            <li>Метод, QueryString, заголовки запроса - через аргумент <b>environ</b></li>
+            <li>Тело запроса передается через file-handle <b>wsgi.input</b></li>
+            <li>HTTP код ответа и заголовки ответа передаются через вызов функции <b>start_response</b></li>
+            <li>Тело ответа возрвращает в виде списка (iterable) из обработчика</li>
+            <li>Поток ошибок должен быть направле в file-handle <b>wsgi.stderr</b></li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Переменные environ</h2>
+        <ul>
+            <li>CGI-like переменные: <code>REQUEST_URI</code>, ...</li>
+            <li><code>wsgi.version</code> - версия WSGI протокола</li>
+            <li><code>wsgi.url_scheme</code> - схема текущего URL: https или http</li>
+            <li><code>wsgi.input</code> - file-handle для чтения тела запроса</li>
+            <li><code>wsgi.errors</code> - file-handle для вывода ошибок</li>
+            <li><code>wsgi.multithreaded</code> - ...</li>
+            <li><code>wsgi.multiprocess</code> - ...</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Развертывание WSGI</h2>
+        <img src="pictures/wsgi.png">
+    </div></section>
+
 
     <div class="progress"><div></div></div>
     <script src="../js/highlight.pack.js"></script>
