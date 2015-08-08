@@ -1,6 +1,9 @@
+/* override standard styles */
+.slide ol, .slide ul { margin-bottom: 24px;}
 .slide pre { margin: 0px !important }
 .slide pre code { line-height: 1.4 }
 
+/* custom styles */
 .lr { float: left; width: 100% }
 .lr::after { clear: both }
 .lr>* {float :left }
@@ -14,10 +17,7 @@
 .c8 { width: 80% }
 .c9 { width: 90% }
 
-img.center {
-    display: block;
-    margin: auto;
-}
+img.center { display: block; margin: auto; }
 
 plus, minus { display: list-item; list-style-type: none; }
 plus:before { display: inline; content: "➕"; font-weight: bold; margin-right: 0.5em; color: green }
