@@ -94,9 +94,10 @@
 
     <section class="slide"><div>
         <h2>Структура проекта</h2>
+        <code>django-admin startproject project</code> - создание проекта.
         <script type="snippet" lang="plain">
+            project
             ├── crm
-            │   ├── admin.py
             │   ├── models.py
             │   ├── urls.py
             │   └── views.py
@@ -122,6 +123,7 @@
     <section class="slide"><div>
         <h2>Структура не-open-source проекта</h2>
         <script type="snippet" lang="python">
+        anyname
         ├── project
         │   ├── crm
         │   ├── blog
@@ -143,6 +145,8 @@
         <h2>Djago приложения</h2>
         <p><b>Приложения</b> - способ распространения кода в Django инфраструктуре.
         В случае, если вы не планируете публиковать ваш код, приложения - это просто способ логической организации кода.</p>
+        <p><code>./manage.py startapp crm</code> - создание нового приложения с именем <code>crm</code>. 
+            Нужно вызывать из директории проекта.</p>
     </div></section>
 
     <section class="slide"><div>
@@ -154,7 +158,6 @@
         ├── management
         │   └── commands
         ├── migrations
-        ├── admin.py
         ├── models.py
         ├── tests.py
         ├── urls.py
@@ -173,16 +176,6 @@
             <li><code>static</code> - CSS, JavaScript, картинки</li>
             <li><code>migrations</code> - миграции для обновления базы данных</li>
         </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Создание проекта и приложения</h2>
-        <p>
-            <code>django-admin startproject project</code> - создание нового проекта с именем <code>project</code>. Проект будет создан в текущей директории.
-        </p>
-        <p>
-            <code>./manage.py startapp crm</code> - создание нового приложения с именем <code>crm</code>. Нужно вызывать из директории проекта.<br>
-        </p>
     </div></section>
 
     <section class="slide shout"><div>
