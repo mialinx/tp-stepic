@@ -311,6 +311,20 @@
         </ul>
     </div></section>
 
+    <section class="slide"><div>
+        <h2>Reverse routing</h2>
+        В python коде:
+        <script type="snippet" lang="python">
+            from django.core.urlresolvers import reverse
+            reverse('home')
+            reverse('category-view', args=(10,))
+            reverse('post-detail', kwargs={'pk': 7})
+        </script>
+        В шаблоне:
+        <script type="snippet" lang="django">
+            {% url 'question-view' question.id %}
+        </script>
+    </div></section>
 
     <div class="progress"><div></div></div>
     <script src="../js/highlight.pack.js"></script>
