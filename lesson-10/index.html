@@ -24,8 +24,8 @@
         <p>
             Контроллеры в Django - это обычные функции, которые:
             <ul>
-                <li>принимают объект HttpRequest первым параметром</li>
-                <li>возвращают объект HttpResponse</li>
+                <li>принимают объект <code>django.http.HttpRequest</code><br>первым параметром</li>
+                <li>возвращают объект <code>django.http.HttpResponse</code></li>
             </ul>
         </p>
     </div></section>
@@ -137,6 +137,21 @@
     </div></section>
 
     <section class="slide"><div>
+        <h2>GET и POST - объекты QueryDict</h2>
+        <p><code>/path/?id=3&id=4&id=5</code></p>
+        Получение множественных значений
+        <script type="snippet" lang="python">
+            id = request.GET.get('id')     # id is 5
+            id = request.GET.getlist('id') # id is [3,4,5]
+        </script>
+        Сериализация
+        <script type="snippet" lang="python">
+            qs = request.GET.urlencode()
+            # qs is 'id=3&id=4&id=5'
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
         <h2>Получение и установка HTTP заголовков</h2>
         <script type="snippet" lang="python">
             user_agent = request.META.get('HTTP_USER_AGENT')
@@ -223,7 +238,7 @@
         <h2>Правильный подход</h2>
         <p>Необходимо отделить данные (<b>контекст</b>) от представления (<b>шаблона</b>). Для этого используются <b>шаблонизаторы</b>.</p>
             <ul>
-                <plus>Разделяет работу web-мастера и программиста</plus>
+                <plus>Разделение работы web-мастера и программиста</plus>
                 <plus>Повторное использование HTML кода</plus>
                 <plus>Более чистый python код</plus>
             </ul>
@@ -268,12 +283,12 @@
     <section class="slide"><div>
         <h2>Возможности шаблонизатора</h2>
         <ul>
-            <li><code>{% for item in list %}</code> - итерация по списку</li>
-            <li><code>{% if var %}</code> - условное отображени</li>
+            <li><code>{% for item in list %}{% endfor %}</code> - итерация по списку</li>
+            <li><code>{% if var %}{% endif %}</code> - условное отображение</li>
             <li><code>{% include "tpl.html" %}</code> - включение подшаблона</li>
             <li><code>{{ var }}</code> - вывод переменной</li>
             <li><code>{{ var|truncatechars:9 }}</code> - применение фильтров</li>
-            <li><code>{# commetn #}</code> - комментарии</li>
+            <li><code>{# comment #}</code>, <code>{% comment %}{% endcomment %}</code> - комментарии</li>
         </ul>
     </div></section>
 
