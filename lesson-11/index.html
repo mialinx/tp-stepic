@@ -126,6 +126,21 @@
     </div></section>
 
     <section class="slide"><div>
+        <h2>Прямой доступ к базе</h2>
+        <script type="snippet" lang="python">
+            from django.db import connection, connections
+
+            cur = connection.cursor()
+            cur.execute("select * from tbl limit 10")
+
+            default_cur = connections['default'].cursor()
+            default_cur.execute("select * from tbl2 limit 10")
+            another_cur = connections['another'].cursor()
+            another_cur.execute("select * from tbl2 limit 10")
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
         <h2>Полезные утилиты</h2>
         <ul>
             <li><code>./manage.py validate</code> - проверить структуру моделей</li>
