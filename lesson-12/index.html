@@ -157,18 +157,21 @@
         <p>
             В моделе содержатся методы для работы с одним объектом (одной строкой).
             В <b>ModelManager</b> содержатся объекты для работы со множеством объектов.
-            <b>ModelManager</b> расширяет функицонал QuerySet.
+            <b>ModelManager</b> &laquo;по-умолчанию&raquo; содержит все те же методы что <b>QuerySet</b> 
+            и используется для создания <b>QuerySet</b> объектов связанных с данной моделью.
         </p>
     </div></section>
 
     <section class="slide"><div>
-        <h2>ModelManager по - умолчанию</h2>
+        <h2>ModelManager &laquo;по-умолчанию&raquo;</h2>
         <script type="snippet" lang="python">
             class Post(models.Model):
                 title = models.CharField()
                 # ....
 
-            posts = Post.objects   # default manager
+            posts = Post.objects                   # Manager
+            posts = Post.objects.all()             # QuerySet
+            posts = Post.objects.filter(id__gt=10) # QuerySet
         </script>
     </div></section>
 
