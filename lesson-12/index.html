@@ -239,6 +239,22 @@
         </ul>
     </div></section>
 
+    <section class="slide"><div>
+        <h2>Свои миграции</h2>
+        <code>project/migration/2015-08-08-more-post-fields.py</code>
+        <script type="snippet" lang="python">
+            #!/usr/bin/python2.7
+            from django.core.management import setup_environ
+            from project import settings
+            setup_environ(settings)
+            from django.db import connection
+            cursor = connection.cursor()
+            cursor.execute("""
+                alter table blog_post add column is_best tinyint(1)
+            """);
+        </script>
+    </div></section>
+
     <section class="slide shout"><div>
         <h2>Best practices</h2>
     </div></section>
