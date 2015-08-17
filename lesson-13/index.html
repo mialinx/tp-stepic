@@ -254,7 +254,7 @@
                     res = []
                     if since is not None:
                         qs = qs.filter('id__lt'=since)
-                    for p in qs:
+                    for p in qs[:1000]:
                         if len(res):
                             res.append(p)        
                         elif res[-1].category != p.category:
