@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Web технологии</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=792, user-scalable=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="../node_modules/shower-bright/styles/screen.css">
+    <link rel="stylesheet" href="../css/highlight/github.css">
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body class="list">
+    <header class="caption">
+        <h1>Web технологии</h1>
+        <p><a href="https://github.com/mialinx/">Дмитрий Смаль</a></p>
+    </header>
+
+    <section class="slide shout"><div>
+        <h2>Авторизация в Web</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Авторизация в Web-приложения</h2>
+        <p>HTTP - <b>stateless</b> протокол, т.е. не предполагает поддержания соединения между клиентом и сервером.
+           Это значит, что сервер не может связать информацию о пользователе с конкретным соединением и вынужден
+           загружать ее при каждом запросе.</p>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Basic HTTP Authorization</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Basic HTTP Authorization</h2>
+        TODO: draw.io scheme
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Заголовки и коды ответа</h2>
+        <ul>
+            <li><code>401 Unauthorized</code> - для доступа к ресурсу нужна атворизация</li>
+            <li><code>WWW-Authenticate: Basic realm="admin"</code> - запрос логина/пароля для раздела admin</li>
+            <li><code>Authorization: Basic Z2l2aTpkZXJwYXJvbA==</code> - передача логина/пароля в виде 
+                <code>base64(login + ':' + pass)</code></li>
+            <li><code>403 Forbidden</code> - логин/пароль не подходят</li>
+            <li><code>REMOTE_USER</code> - CGI переменная с именем авторизованного пользователя</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Достоинства и недостатки</h2>
+        <ul>
+            <plus>Простота и надежность</plus>
+            <plus>Готовые модули для web-серверов</plus>
+            <plus>Не требует написания кода</plus>
+            <minus>Логин/пароль передаются в открытом виде - нужен <code>https</code></minus>
+            <minus>Невозможно изменить дизайн формы входа</minus>
+            <minus>Невозможно &laquo;сбросить&raquo; авторизацию</minus>
+        </ul>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Cookies</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Cookies</h2>
+        <p><b>Cookie</b> - небольшие фрагменты данных, которые браузер хранит на стороне клиента 
+            и передает на сервер при каждом запросе. <b>Cookie</b> привязаны к доменам, поэтому 
+            при каждом запросе сервер получает только &laquo;свои&raquo; cookies. Невозможно 
+            получить доступ к cookies с другого домена. <b>Cookie</b> используются для поддержания
+            состояния (state management) в протоколе HTTP и, в частности, для авторизаци.
+        </p>
+        <!-- RFC: 6265 -->
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Аттрибуты Cookies</h2>
+        <ul>
+            <li><code>name=value</code> - имя и значение cookie</li>
+            <li><code>Expires</code> - время жизни cookie, по умолчанию - до закрытия окна.</li>
+            <li><code>Domain</code> - домен cookie, по умолчанию - домен текущего URL.</li>
+            <li><code>Path</code> - путь cookie, по умолчанию - путь текущего URL.</li>
+            <li><code>Secure</code> - cookie должна передаваться только по https</li>
+            <li><code>HttpOnly</code> - cookie не доступна из JavaScript</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Установка и удаление Cookies</h2>
+        <script type="snippet" lang="plain">
+            Set-Cookie: session=d232rn38jd1023e1nm13r25z; 
+                Domain=.site.com; Path=/admin/; 
+                Expires=Sat, 15 Aug 2015 07:58:23 GMT; 
+                Secure; HttpOnly 
+            Set-Cookie: lang=ru
+        </script>
+        <script type="snippet" lang="plain">
+            Set-Cookie: session=xxx; 
+                Expires=Sun, 06 Nov 1994 08:49:37 GMT
+        </script>
+        <p>Для удаления cookie, сервер устанавливает <code>Expires</code> в прошлом.</p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Получение Cookies</h2>
+        <script type="snippet" lang="plain">
+            Cookie: session=d232rn38jd1023e1nm13r25z; lang=ru;
+                csrftoken=vVqoyo5vzD3hWRHQDRpIHzVmKLfBQIGD; 
+        </script>
+        <p>При каждом запросе браузер выбирает подходящие куки и отправляет только их значения.</p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Правила выбора Cookie</h2>
+        Путсть URL=<code>http://my.app.site.com/blog/post/12</code><br>
+        Браузер выберет все куки, у которых:
+        <ul>
+            <li>Не истек срок <code>Expires</code></li>
+            <li><code>Domain</code> совпадает с <code>my.app.site.com</code> или является .суффиксом, 
+                например <code>Domain=.site.com</code>
+            </li>
+            <li><code>Path</code> является префиксом <code>/blog/post/12</code>, <br>
+                например <code>Path=/blog/</code>
+            </li>
+            <li>Не стоит флага <code>Secure</code></li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Работа с cookie в Django</h2>
+        <script type="snippet" lang="python">
+            # установка
+            resp.set_cookie('session','asde132dk13d1') 
+            resp.set_cookie('session','asde132dk13d1', 
+                domain='.site.com', path='/blog/', 
+                expires=(datettime.now() + timedelta(days=30))) 
+
+            # удаление
+            resp.delete_cookie('another')
+
+            # получение
+            request.COOKIES                 # все cookies
+            request.COOKIES.get('session')  # одна cookie
+        </script>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Cookie-based авторизация</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Cookie-based авторизация</h2>
+        TODO: общая схема
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Основные сценарии</h2>
+        <ul>
+            <li>Вход на сайт</li>
+            <li>Проверка сессии</li>
+            <li>Выход с сайта</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Вход на сайт</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Проверка сессии</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Выход с сайта</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Анонимные сессии</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Безопасность</h2>
+        <p>
+            Основное направление атаки - кража cookie, хранящих ключ сессии, т.е. кража авторизации.
+            Меры безопасности:
+            <ul>
+                <li><code>HttpOnly</code> флаг для сессионой cookie</li>
+                <li>Привязка сессии к IP адресу</li>
+                <li>Привязка сессии к User-Agent</li>
+                <li>Запрос пароля при критических действиях: смене пароля и т.д.</li>
+            </ul>
+        </p>
+    </div></section>
+
+    <div class="progress"><div></div></div>
+    <script src="../js/highlight.pack.js"></script>
+    <script src="../node_modules/shower-core/shower.min.js"></script>
+    <script src="../js/init.js"></script>
+
+</body>
+</html>
