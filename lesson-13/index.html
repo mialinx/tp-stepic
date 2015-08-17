@@ -40,9 +40,9 @@
         <script type="snippet" lang="python">
             # blog/urls.py
             urlpatterns = [
-                url(r'^(?P<slug>\w+)/$', post_details, 
+                url(r'^post/(?P<slug>\w+)/$', post_details, 
                     name='post-details'),        
-                url(r'tag/^(?P<slug>\w+)/$', tag_details, 
+                url(r'^tag/^(?P<slug>\w+)/$', tag_details, 
                     name='tag-details'),        
             ]
         </script>
