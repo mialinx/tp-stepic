@@ -231,7 +231,7 @@
         <script type="snippet" lang="python">
             class AddPostForm(forms.Form):
                 # ... поля ...
-                def __init__(self, user, **kwargs)
+                def __init__(self, user, **kwargs):
                     self._user = user
                     super(AddPostForm, self).__init__(**kwargs)
                 def clean(self):
