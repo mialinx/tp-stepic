@@ -146,8 +146,8 @@
                 paginator.baseurl = '/blog/all_posts/?page='
                 page = paginator.page(page)  # Page
                 return render(request, 'blog/post_by_tag.html', {
-                    posts:     page.object_list,
-                    paginator: paginator, page: page,
+                    'posts':  page.object_list,
+                    'paginator': paginator, 'page': page,
                 })
         </script>
     </div></section>
@@ -273,8 +273,8 @@
                 since = request.GET.get('since')
                 posts = Post.objects.main(since)
                 return render(request, 'blog/post_main.html', {
-                    posts: posts,
-                    since: posts[-1].id,
+                    'posts': posts,
+                    'since': posts[-1].id,
                 })
         </script>
         <script type="snippet" lang="python">
