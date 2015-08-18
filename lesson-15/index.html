@@ -255,6 +255,7 @@
             class CheckSessionMiidleware(class): 
                 def process_request(request):
                     try:
+                        sessid = request.COOKIE.get('sessid')
                         session = Session.objects.get(
                             key=sessid, 
                             expires__gt=datetime.now(),
