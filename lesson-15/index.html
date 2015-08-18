@@ -189,14 +189,15 @@
                 if request.method == 'POST':
                     login = request.POST.get('login')
                     password = request.POST.get('password')
+                    url = request.POST.get('continue', '/')
                     sessid = do_login(login, password)
                     if sessid:
-                        request.set_cookie('sessid', sessid, 
+                        response = HttpResponseRedirect(url)
+                        response.set_cookie('sessid', sessid, 
                            domain='.site.com', httponly=True,
                            expires = datetime.now()+timedelta(days=5)
                         )
-                        url = request.POST.get('continue', '/')
-                        return HttpResponseRedirect(url)
+                        return response
                     else:
                         error = u'Неверный логин / пароль'
                 return render(request, 'login.html', {'error': error })

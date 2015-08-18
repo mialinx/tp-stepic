@@ -42,8 +42,13 @@
             c.className += " lang-"  + s.getAttribute("lang");
         }
         var p = document.createElement('pre');
-        if (maxlen > 55 && !s.getAttribute("noscale")) {
-            p.style['font-size'] = Math.floor(55/maxlen*20)*5 + '%';
+        if (!s.getAttribute('noscale')) {
+            var ws = Math.floor(55/maxlen*25)*4;
+            var hs = Math.floor(16/lines.length*25)*4;
+            var sc  = Math.min(ws,hs);
+            if (sc < 100) {
+                p.style['font-size'] = sc + '%';
+            }
         }
         p.appendChild(c);
         s.parentNode.replaceChild(p, s);
