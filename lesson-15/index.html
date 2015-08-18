@@ -16,11 +16,11 @@
     </header>
 
     <section class="slide shout"><div>
-        <h2>Авторизация в Web</h2>
+        <h2>Авторизация в Web-приложениях</h2>
     </div></section>
 
     <section class="slide"><div>
-        <h2>Авторизация в Web-приложения</h2>
+        <h2>Авторизация в Web-приложениях</h2>
         <p>HTTP - <b>stateless</b> протокол, т.е. не предполагает поддержания соединения между клиентом и сервером.
            Это значит, что сервер не может связать информацию о пользователе с конкретным соединением и вынужден
            загружать ее при каждом запросе.</p>
@@ -65,17 +65,17 @@
 
     <section class="slide"><div>
         <h2>Cookies</h2>
-        <p><b>Cookie</b> - небольшие фрагменты данных, которые браузер хранит на стороне клиента 
-            и передает на сервер при каждом запросе. <b>Cookie</b> привязаны к доменам, поэтому 
+        <p><b>Cookies</b> - небольшие фрагменты данных, которые браузер хранит на стороне клиента 
+            и передает на сервер при каждом запросе. <b>Cookies</b> привязаны к доменам, поэтому 
             при каждом запросе сервер получает только &laquo;свои&raquo; cookies. Невозможно 
-            получить доступ к cookies с другого домена. <b>Cookie</b> используются для поддержания
-            состояния (state management) в протоколе HTTP и, в частности, для авторизаци.
+            получить доступ к cookies с другого домена. <b>Cookies</b> используются для поддержания
+            состояния (state management) в протоколе HTTP и, в частности, для авторизации.
         </p>
         <!-- RFC: 6265 -->
     </div></section>
 
     <section class="slide"><div>
-        <h2>Аттрибуты Cookies</h2>
+        <h2>Аттрибуты Cookie</h2>
         <ul>
             <li><code>name=value</code> - имя и значение cookie</li>
             <li><code>Expires</code> - время жизни cookie, по умолчанию - до закрытия окна.</li>
@@ -89,14 +89,14 @@
     <section class="slide"><div>
         <h2>Установка и удаление Cookies</h2>
         <script type="snippet" lang="plain">
-            Set-Cookie: session=d232rn38jd1023e1nm13r25z; 
+            Set-Cookie: sessid=d232rn38jd1023e1nm13r25z; 
                 Domain=.site.com; Path=/admin/; 
                 Expires=Sat, 15 Aug 2015 07:58:23 GMT; 
                 Secure; HttpOnly 
             Set-Cookie: lang=ru
         </script>
         <script type="snippet" lang="plain">
-            Set-Cookie: session=xxx; 
+            Set-Cookie: sessid=xxx; 
                 Expires=Sun, 06 Nov 1994 08:49:37 GMT
         </script>
         <p>Для удаления cookie, сервер устанавливает <code>Expires</code> в прошлом.</p>
@@ -105,16 +105,16 @@
     <section class="slide"><div>
         <h2>Получение Cookies</h2>
         <script type="snippet" lang="plain">
-            Cookie: session=d232rn38jd1023e1nm13r25z; lang=ru;
+            Cookie: sessid=d232rn38jd1023e1nm13r25z; lang=ru;
                 csrftoken=vVqoyo5vzD3hWRHQDRpIHzVmKLfBQIGD; 
         </script>
-        <p>При каждом запросе браузер выбирает подходящие куки и отправляет только их значения.</p>
+        <p>При каждом запросе браузер выбирает подходящие cookies и отправляет только их значения.</p>
     </div></section>
 
     <section class="slide"><div>
-        <h2>Правила выбора Cookie</h2>
+        <h2>Правила выбора Cookies</h2>
         Путсть URL=<code>http://my.app.site.com/blog/post/12</code><br>
-        Браузер выберет все куки, у которых:
+        Браузер выберет все cookies, у которых:
         <ul>
             <li>Не истек срок <code>Expires</code></li>
             <li><code>Domain</code> совпадает с <code>my.app.site.com</code> или является .суффиксом, 
@@ -131,8 +131,8 @@
         <h2>Работа с cookie в Django</h2>
         <script type="snippet" lang="python">
             # установка
-            resp.set_cookie('session','asde132dk13d1') 
-            resp.set_cookie('session','asde132dk13d1', 
+            resp.set_cookie('sessid','asde132dk13d1') 
+            resp.set_cookie('sessid','asde132dk13d1', 
                 domain='.site.com', path='/blog/', 
                 expires=(datettime.now() + timedelta(days=30))) 
 
@@ -140,8 +140,8 @@
             resp.delete_cookie('another')
 
             # получение
-            request.COOKIES                 # все cookies
-            request.COOKIES.get('session')  # одна cookie
+            request.COOKIES                # все cookies
+            request.COOKIES.get('sessid')  # одна cookie
         </script>
     </div></section>
 
@@ -186,12 +186,12 @@
         <script type="snippet" lang="python">
             def login(request):
                 error = ''
-                if request.method == "POST":
+                if request.method == 'POST':
                     login = request.POST.get('login')
                     password = request.POST.get('password')
                     sessid = do_login(login, password)
                     if sessid:
-                        request.set_cookie('sessid', id, 
+                        request.set_cookie('sessid', sessid, 
                            domain='.site.com', httponly=True,
                            expires = datetime.now()+timedelta(days=5)
                         )
@@ -225,10 +225,10 @@
     <section class="slide"><div>
         <h2>Проверка сессии</h2>
         <p>
-            При любом запросе по любому URL:
+            При запросе по любому URL:
             <ul>
                 <li>Клиент передает в заголовке <code>Cookie</code> свой <code>sessid</code></li>
-                <li>Сервер загружает сессиию из базы по <code>sessid</code></li>
+                <li>Сервер загружает сессию из базы данных по <code>sessid</code></li>
                 <li>Сервер загружает объект пользователя по <code>id</code> из сессии</li>
             </ul>
             Как правило, для проверки сессии используются <code>middleware</code>.
@@ -267,7 +267,8 @@
     </div></section>
 
     <section class="slide"><div>
-        <h2>Выход с сайта</h2>
+        <h2>Выход из приложения</h2>
+        <p>Для выхода из приложения достаточно удалить объект сессии:</p>
         <script type="snippet" lang="python">
             def logout(request):
                 sessid = request.COOKIE.get('sessid')
@@ -298,7 +299,7 @@
 
     <section class="slide"><div>
         <h2>django.contrib.auth</h2>
-        <p>Предоставляет готовую модель <code>User</code>, готвую систему разделения прав, 
+        <p>Предоставляет готовую модель <code>User</code>, готовую систему разделения прав, 
             view для регистрации / входа / выхода. Используется другими приложениями, например <code>django.contrib.admin</code>
         </p>
         <script type="snippet" lang="python">
@@ -331,7 +332,7 @@
     <section class="slide"><div>
         <h2>Безопасность сессий</h2>
         <p>
-            Основное направление атаки - кража cookie, хранящих ключ сессии, т.е. кража авторизации.
+            Основное направление атаки - кража cookie, хранящей ключ сессии, т.е. кража авторизации.
             Меры безопасности:
             <ul>
                 <li>Ключ сессии невозможно подобрать перебором</li>
