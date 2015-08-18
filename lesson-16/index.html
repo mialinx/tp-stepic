@@ -108,7 +108,7 @@
             import json
 
             class HttpResponseAjax(HttpResponse):
-                def __init__(self, status, **kwargs):
+                def __init__(self, status='ok', **kwargs):
                     kwargs['status'] = status
                     super(HttpResponseAjax, self).__init__(
                         content = json.dumps(kwargs),
