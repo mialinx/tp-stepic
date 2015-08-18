@@ -32,7 +32,7 @@
 
     <section class="slide"><div>
         <h2>Basic HTTP Authorization</h2>
-        TODO: draw.io scheme
+        <img src="pictures/basic.png" class="center">
     </div></section>
 
     <section class="slide"><div>
@@ -41,7 +41,7 @@
             <li><code>401 Unauthorized</code> - для доступа к ресурсу нужна атворизация</li>
             <li><code>WWW-Authenticate: Basic realm="admin"</code> - запрос логина/пароля для раздела admin</li>
             <li><code>Authorization: Basic Z2l2aTpkZXJwYXJvbA==</code> - передача логина/пароля в виде 
-                <code>base64(login + ':' + pass)</code></li>
+                <code>base64(login + ':' + password)</code></li>
             <li><code>403 Forbidden</code> - логин/пароль не подходят</li>
             <li><code>REMOTE_USER</code> - CGI переменная с именем авторизованного пользователя</li>
         </ul>
@@ -151,43 +151,193 @@
 
     <section class="slide"><div>
         <h2>Cookie-based авторизация</h2>
-        TODO: общая схема
+        <img src="pictures/cookieauth.png" class="center">
     </div></section>
 
     <section class="slide"><div>
-        <h2>Основные сценарии</h2>
-        <ul>
-            <li>Вход на сайт</li>
-            <li>Проверка сессии</li>
-            <li>Выход с сайта</li>
-        </ul>
+        <h2>Необходимые модели</h2>
+        <script type="snippet" lang="python">
+            class User(models.Model):
+                login    = models.CharField(unique=True)
+                password = models.CharField()
+                name     = models.CharField()
+
+            class Session(models.Model):
+                key  = models.CharField(unique=True)
+                user = models.ForeignKey(User)
+                expires = models.DateTimeField()
+        </script>
     </div></section>
 
     <section class="slide"><div>
         <h2>Вход на сайт</h2>
+        <p>
+        URL = <code>/login/</code>
+        <ul>
+            <li>Клиент отправляет login / password на сервер</li>
+            <li>Сервер проверяет login / password и создает <b>сессию</b></li>
+            <li>Сервер устанавливает cookie, содержащий <b>ключ сессии</b></li>
+            <li>Сервер делает перенаправление на целевую страницу</li>
+        </ul>
+        </p>
+    </div></section>
+
+    <section class="slide"><div>
+        <script type="snippet" lang="python">
+            def login(request):
+                error = ''
+                if request.method == "POST":
+                    login = request.POST.get('login')
+                    password = request.POST.get('password')
+                    sessid = do_login(login, password)
+                    if sessid:
+                        request.set_cookie('sessid', id, 
+                           domain='.site.com', httponly=True,
+                           expires = datetime.now()+timedelta(days=5)
+                        )
+                        url = request.POST.get('continue', '/')
+                        return HttpResponseRedirect(url)
+                    else:
+                        error = u'Неверный логин / пароль'
+                return render(request, 'login.html', {'error': error })
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <script type="snippet" lang="python">
+            def do_login(login, password):
+                try:
+                    user = User.objects.get(login=login)
+                except User.DoesNotExist:
+                    return None
+                hashed_pass = salt_and_hash(password)
+                if user.password != hashed_pass
+                    return None
+                session = Session()
+                session.key = generate_long_random_key()
+                session.user = user
+                session.expires = datetime.now() + timedelta(days=5)
+                session.save()
+                return session.key
+        </script>
     </div></section>
 
     <section class="slide"><div>
         <h2>Проверка сессии</h2>
+        <p>
+            При любом запросе по любому URL:
+            <ul>
+                <li>Клиент передает в заголовке <code>Cookie</code> свой <code>sessid</code></li>
+                <li>Сервер загружает сессиию из базы по <code>sessid</code></li>
+                <li>Сервер загружает объект пользователя по <code>id</code> из сессии</li>
+            </ul>
+            Как правило, для проверки сессии используются <code>middleware</code>.
+        </p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Middleware в Django</h2>
+        <p><b>Middleware</b> - это Python класс, в котором есть один из указанных ниже методов.
+            Список всех активных middleware указан в настройке <code>MIDDLEWARE_CLASSES</code>.
+            <ul>
+                <li><code>process_request(request)</code></li>
+                <li><code>process_view(request, view, args, kwargs)</code></li>
+                <li><code>process_response(request, response)</code></li>
+                <li><code>process_exception(request, exception)</code></li>
+            </ul>
+        </p>
+    </div></section>
+
+    <section class="slide"><div>
+        <script type="snippet" lang="python">
+            # project/project/middleware.py
+            class CheckSessionMiidleware(class): 
+                def process_request(request):
+                    try:
+                        session = Session.objects.get(
+                            key=sessid, 
+                            expires__gt=datetime.now(),
+                        )
+                        request.session = session
+                        request.user = session.user
+                    except Session.DoesNotExist:
+                        request.session = None
+                        request.user = None
+        </script>
     </div></section>
 
     <section class="slide"><div>
         <h2>Выход с сайта</h2>
+        <script type="snippet" lang="python">
+            def logout(request):
+                sessid = request.COOKIE.get('sessid')
+                if sessid is not None:
+                    Session.objects.delete(key=sessid)
+                url = request.GET.get('continue', '/')
+                return HttpResponseRedirect(url)
+        </script>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Встроенная авторизация Django</h2>
     </div></section>
 
     <section class="slide"><div>
-        <h2>Анонимные сессии</h2>
+        <h2>django.contrib.sessions</h2>
+        <p>Предоставляет поддержку сессий, в том числе <b>анонимных</b>. 
+           Позволяет хранить в сессии произвольные данные, а не только ID пользователя.
+           Позволяет хранить сессии в различных хранилищах, например <b>Redis</b> или <b>Memcached</b>.
+        </p>
+        <script type="snippet" lang="python">
+            def some_view(request):
+                val = request.session['some_name']
+                request.session.flush()
+                request.session['some_name'] = 'val2'
+        </script>
     </div></section>
 
     <section class="slide"><div>
+        <h2>django.contrib.auth</h2>
+        <p>Предоставляет готовую модель <code>User</code>, готвую систему разделения прав, 
+            view для регистрации / входа / выхода. Используется другими приложениями, например <code>django.contrib.admin</code>
+        </p>
+        <script type="snippet" lang="python">
+            def some_view(request):
+                user = request.user # Определено всегда!
+                if user.is_authenticated():
+                    pass # обычный пользователь
+                else:
+                    pass # анонимный пользователь
+        </script>
+    </div></section>
+
+    <section class="slide shout"><div>
         <h2>Безопасность</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Безопасность паролей</h2>
+        <p>
+            Главная задача - максимально затруднить доступ злоумышленика к исходному паролю пользователя.
+            Меры безопасности:
+            <ul>
+                <li>Отправка формы входа (login / password) по <b>https</b></li>
+                <li>Пароли хранятся в виде хэшей с добавлением соли</li>
+                <li>Защита от перебора в форме логина, например <b>captcha</b></li>
+            </ul>
+        </p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Безопасность сессий</h2>
         <p>
             Основное направление атаки - кража cookie, хранящих ключ сессии, т.е. кража авторизации.
             Меры безопасности:
             <ul>
+                <li>Ключ сессии невозможно подобрать перебором</li>
                 <li><code>HttpOnly</code> флаг для сессионой cookie</li>
                 <li>Привязка сессии к IP адресу</li>
-                <li>Привязка сессии к User-Agent</li>
+                <li>Ограничение сессий по времени</li>
                 <li>Запрос пароля при критических действиях: смене пароля и т.д.</li>
             </ul>
         </p>
