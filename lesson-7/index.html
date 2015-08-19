@@ -95,8 +95,7 @@
     </div></section>
 
     <section class="slide"><div>
-        <p style="font-size: 70%">
-        <script type="snippet" lang="plain">
+        <script type="snippet" lang="nginx">
             user  www www;
             error_log  /var/log/nginx.error_log  info;
             http {
@@ -118,7 +117,6 @@
               }
             }
         </script>
-        </p>
     </div></section>
 
     <section class="slide"><div>
@@ -147,7 +145,7 @@
 
     <section class="slide"><div>
         <h2>Отдача статических документов</h2>
-        <script type="snippet" lang="plain">
+        <script type="snippet" lang="nginx">
             location ~* ^.+\.(jpg|jpeg|gif)$ {
                 root        /www/images;
             }

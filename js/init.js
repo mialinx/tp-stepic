@@ -42,13 +42,16 @@
             c.className += " lang-"  + s.getAttribute("lang");
         }
         var p = document.createElement('pre');
-        if (!s.getAttribute('noscale')) {
-            var ws = Math.floor(55/maxlen*25)*4;
-            var hs = Math.floor(16/lines.length*25)*4;
-            var sc  = Math.min(ws,hs);
-            if (sc < 100) {
-                p.style['font-size'] = sc + '%';
-            }
+        var scale = s.getAttribute('scale');
+        if (!scale || scale == 'auto') {
+            var max_cols = 55;
+            var max_lines = s.parentNode.children[0] == s ? 15 : 13;
+            var ws = Math.floor(max_cols/maxlen*20)*5;
+            var hs = Math.floor(max_lines/lines.length*20)*5;
+            var sc  = Math.min(100, Math.min(ws, hs));
+            p.style['font-size'] = sc + '%';
+        } else if (scale != 'none') {
+            p.style['font-size'] = scale + '%';
         }
         p.appendChild(c);
         s.parentNode.replaceChild(p, s);

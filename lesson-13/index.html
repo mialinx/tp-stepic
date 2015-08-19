@@ -85,7 +85,7 @@
     </div></section>
 
     <section class="slide"><div>
-        <h2>Отображение связанных сущностей</h2>
+        <h2>Связанные сущности</h2>
         <script type="snippet" lang="python">
             def post_details(request, slug):
                 post = get_object_or_404(Post, slug=slug)
@@ -103,7 +103,7 @@
     </div></section>
 
     <section class="slide"><div>
-        <h2>Отображение связанных сущностей</h2>
+        <h2>Связанные сущности</h2>
         <script type="snippet" lang="django">
             <h1>{{ post.category.title }} - {{ post.title }}</h1>
             {% for tag in post.tags.all %}
@@ -210,7 +210,6 @@
     </div></section>
 
     <section class="slide"><div>
-        <p style="font-size: 85%">
         <script type="snippet" lang="python">
             def paginate(request, qs):
                 try:
@@ -230,7 +229,6 @@
                     page = paginator.page(paginator.num_pages)
                 return page
         </script>
-        </p>
     </div></section>
 
     <section class="slide shout"><div>
