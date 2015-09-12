@@ -16,313 +16,201 @@
     </header>
 
     <section class="slide shout"><div>
-        <h2>HTML</h2>
+        <h2>Как происходит HTTP запрос ?</h2>
     </div></section>
 
     <section class="slide"><div>
-        <script type="snippet" lang="html">
-            <!DOCTYPE html> 
-            <html> 
-              <head>
-                <title>Страница</title> 
-                <meta http-equiv=”Content-Type” 
-                    content=”text/html; charset=utf-8”> 
-                <meta name=”description” content=”Сайт”>
-                <link rel=”stylesheet” href=”./style.css”> 
-              </head>
-              <body id=”the_body”>
-                <p class=”article”>...</p>
-                <script src=”./script.js”></scr&#8203;ipt> 
-              </body> 
-            </html>
+        <h2>Как происходит HTTP запрос ?</h2>
+        <ul>
+            <li>Браузер анализирует введенный URL и извлекает имя хоста</li>
+            <li>Используя систему DNS, браузер преобразует домен в ip адрес</li>
+            <li>Устанавливает TCP соединение с web-сервером</li>
+            <li>Если протокол https, устанавливает TLS соединение поверх TCP</li>
+            <li>Формирует HTTP запрос, отправляет его, HTTP ответ</li>
+            <li>Браузер закрывает соединение (для HTTP/1.0)</li>
+            <li>Далее процесс парсинга и отображения документа ...</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <img src="pictures/stack.png" class="place" >
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>DNS</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Domain Name System</h2>
+        <p>DNS - это распределенная база данных, хранящая информацию о доменах, в первую очередь
+           отображение доменных имен на IP адреса машин, обслуживающих эти домены</p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Пространство доменных имен</h2>
+        <img src="pictures/domains.png" >
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Домены и зоны</h2>
+        <p>База DNS разделена на <b>зоны</b>. Каждая зона находится под единым административным контролем. 
+           Проще говоря обслуживается одной организацией.</p>
+        <p>Хранение информации о доменах более высокого уровня может быть <b>делегировано</b> другим зонам.</p>
+    </div></section>
+
+    <section class="slide"><div>
+        <img src="pictures/zones.png" class="place" >
+    </div></section>
+
+    <section class="slide"><div>
+        <img src="pictures/dnsreq.png" class="place" >
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Что содержит зона DNS сервера ?</h2>
+        <ul>
+            <li>A - IPv4 адрес(а) для данного домена</li>
+            <li>AAAA - IPv6 адрес(а)</li>
+            <li>NS - адрес(a) DNS серверов обслуживающих данную зону</li>
+            <li>MX - адрес(а) почтовых серверов для данного домена</li>
+        </ul>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>TCP</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Зачем нужен TCP ?</h2>
+        <p>TCP - протокол, обеспечивающий надежную последовательную доставку данных. 
+        Фактически, TCP предоставляет интерфейс похожий на файловый ввод/вывод для сетевых соединений.</p>
+        <ul>
+            <li>Надежная доставка</li>
+            <li>Полнодуплексная передача</li>
+            <li>Контроль потока - защита от переполнения</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>TCP порты</h2>
+        <p>TCP порт - это &laquo;адрес&raquo; сетевого соединения в пределах одного хоста. 
+            TCP порты позволяют поддерживать множество открытых соединений на одной машине.</p>
+        <p>Номер порта - целое число, не больше 65535. Порты ниже 1024 требуют 
+            привелегий суперпользователя для использования.</p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Стандартные TCP порты</h2>
+        <ul>
+            <li>20,21 - FTP</li>
+            <li>22 - SSH</li>
+            <li>25 - SMTP</li>
+            <li>80 - HTTP</li>
+            <li>443 - HTTPS</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Установление TCP соединения</h2>
+        <img src="pictures/tcp.png">
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Пример TCP клиента</h2>
+        <script type="snippet" lang="python">
+            import socket
+            req = "Hello tcp!"
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect(('127.0.0.1', 1234))
+            s.send(req)
+            rsp = s.recv(1024)
+            s.close()
         </script>
     </div></section>
 
     <section class="slide"><div>
-        <h2>Особенности HTML разметки</h2>
+        <h2>Пример TCP сервера</h2>
+        <script type="snippet" lang="python">
+            import socket
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.bind(('127.0.0.1', 1234))
+            s.listen(10)
+            while True:
+                conn, addr = s.accept()
+                while True:
+                    data = conn.recv(1024)
+                    if not data: break
+                    conn.send(data)
+                conn.close()
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Как правильно читать данные из сокета ?</h2>
+        <script type="snippet" lang="python">
+            def myreceive(sock, msglen):
+                msg = ''
+                while len(msg) < msglen:
+                    chunk = sock.recv(msglen-len(msg))
+                    if chunk == '':
+                        raise RuntimeError("broken")
+                    msg = msg + chunk
+                return msg
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Как правильно записывать данные в сокет ?</h2>
+        <script type="snippet" lang="python">
+            def mysend(sock, msg):
+                totalsent = 0
+                while totalsent < len(msg):
+                    sent = sock.send(msg[totalsent:])
+                    if sent == 0:
+                        raise RuntimeError("broken")
+                    totalsent = totalsent + sent
+        </script>
+    </div></section>
+
+
+    <section class="slide shout"><div>
+        <h2>TLS</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>TLS - Transport Layer Security</h2>
+        <p>TLS (а ранее SSL) - криптографический протокол обеспечивающий безопасную передачу данных между хостами в Internet.</p>
         <ul>
-            <li>Произвольный регистр: &lt;BR&gt; == &lt;br&gt; </li>
-            <li>Атрибуты без скобок:  color=red</li>
-            <li>Сокращенные атрибуты: disabled</li>
-            <li>Непарные тэги:  &lt;p&gt;  вместо &lt;p&gt;&lt;/p&gt; </li>
-            <li>Перестановки тэгов: &lt;b&gt;&lt;i&gt;&lt;/b&gt;&lt;/i&gt; </li>
-            <li>&laquo;Свои&raquo; тэги:  &lt;magic&gt;&lt;/magic&gt; </li>
+            <li>Аутентификация сервера (и клиента)</li>
+            <li>Шифрование и сжатие пердаваемой информации</li>
+            <li>Защита от подмены и проверка целостности сообщений</li>
         </ul>
     </div></section>
     
     <section class="slide"><div>
-        <h2>Особенности XHTML разметки</h2>
+        <h2>Установление TLS соединения</h2>
+        <img src="pictures/tls.png">
+    </div></section>
+
+    <section class="slide"><div>
         <ul>
-            <li>Только нижний регистр тэгов</li>
-            <li>Атрибуты со скобками:  color=”red”</li>
-            <li>Атрибуты – без сокращений: disabled=”disabled”</li>
-            <li>Тэги всегда парные:  &lt;p&gt;&lt;/p&gt;</li>
-            <li>Строгая вложенность: &lt;i&gt;&lt;b&gt;&lt;/b&gt;&lt;/i&gt;</li>
-            <li>id вместо name</li>
-            <li>Необходим DOCTYPE</li>
+            <li>ClientHello - клиент указывает желаемые опции соединения</li>
+            <li>ServerHello - сервер подтверждает опции соединения</li>
+            <li>Certificate - сервер посылает клиенту свой сертификат</li>
+            <li>Клиент проверяет сертификат. <br>На данном этапе соединение может быть отклонено</li>
+            <li>ClientKeyExchange - клиент отправляет серверу ключ симметричного шифрования (или параметры для его генерации)</li>
+            <li>Finished - сервер поддверждает завершение рукопожатия</li>
         </ul>
     </div></section>
 
     <section class="slide"><div>
-        <h2>DOCTYPE</h2>
-        <p>DOCTYPE уточняет тип содержимого, указывает HTML парсеру как правильно разбирать данный документ.</p>
-        <h3>XHTML 1.1</h3>
-        <code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"&gt;</code>
+        <h2>Неутешительный вывод</h2>
+        <p>Установление TCP и TLS соединения требует существенное время. Минимум 1 RTT для TCP соединения и 1-2 RTT для TLS соединения.</p>
+        <p>Под RTT понимается Round Trip Time - время необходимое для передачи IP дейтограммы к серверу и обратно.</p>
     </div></section>
 
-    <section class="slide"><div>
-        <h2>DOCTYPE</h2>
-        <h3>HTML 4 Transitional</h3>
-        <code>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;</code><br><br>
-        <h3>HTML5</h3>
-        <code>&lt;!DOCTYPE html&gt;</code>
-    </div></section>
-    
-    <section class="slide shout"><div>
-        <h2>HTML тэги</h2>
-    </div></section>
+    <!-- TODO: -->
 
-    <section class="slide"><div>
-        <h2>Тэги верхнего уровня</h2>
-        <ul>
-            <li><code>html</code> - обертка</li>
-            <li><code>head</code> - заголовок страницы, не отображается</li>
-            <li><code>body</code> - тело страницы, то что видит пользователь</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Тэги внутри head</h2>
-        <ul>
-            <li><code>title</code> - отображается в заголовке окна браузера</li>
-            <li><code>meta</code> - содержит информацию для user-agentов<br>
-                <code>&lt;meta name="description" content="Для друзeй"&gt;</code><br>
-                <code>&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;</code>
-            </li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Тэги внутри head (2)</h2>
-        <ul>
-            <li><code>link</code> - указание связанных ресурсов, например CSS<br>
-                <code>&lt;link rel="stylesheet" href="/style.css"&gt;</code><br>
-                <code>&lt;link rel="alternate" href="/news.rss" type="application/rss+xml"&gt;</code>
-            </li>
-            <li><code>script</code> - загрузка JavasScript<br>
-                <code>&lt;script src="./jquery.js" charset="windows-1251" async&gt;&lt;/script&gt;</code>
-            </li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Рекомендацим по link и script</h2>
-        <p>Загрузку CSS (тэг <code>link</code>) рекомендуется ставить в тэге <code>head</code>,
-            а загрузку JavaScript (тэг <code>script</code>) - наоборот ближе к концу странице.
-            Это повышает скоросоть отрисовки страницы.
-        </p>
-    </div></section>
-
-    <section class="slide shout"><div>
-        <h2>Блочные и строчные тэги</h2>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Блочные тэги</h2>
-        <ul>
-            <li><code>h1</code> - <code>h6</code> ― различные уровни заголовков</li>
-            <li><code>p</code> ― разбиение текста на параграфы</li>
-            <li><code>hr</code> ― горизонтальная линия</li>
-            <li><code>pre</code> ― блок преформатированного кода, например исходный код</li>
-            <li><code>blockquote</code> ― цитирование длинного блока текста</li>
-            <li><code>div</code> ― абстрактный блочный контейнер</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Пример</h2>
-        <p>Верстка этого слайда сделана в HTML и является отличным примером использования блочных тэгов.</p>
-        <h2>Подзаголовок</h2>
-        <p>Хотя из-за стилей оформления презентации это не так очевидно.</p>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Строчные тэги</h2>
-        <ul>
-            <li><code>a</code> ― гиперссылки</li>
-            <li><code>em</code>, <code>i</code> ― акцентирование</li>
-            <li><code>strong</code>, <code>b</code> ― выделение</li>
-            <li><code>img</code> ― вставка изображений</li>
-            <li><code>sub</code> ― нижний индекс</li>
-            <li><code>sup</code> ― верхний индекс</li>
-            <li><code>span</code> ― абстрактный строчный контейнер</li>
-        </ul>
-    </div></section>
-
-    <section class="slide shout"><div>
-        <h2>Списки и таблицы</h2>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Списки в HTML</h2>
-        <p><code>ul</code>, <code>ol</code>, <code>li</code> - маркированные списки</p>
-        <script type="snippet" lang="html">
-            <ul>
-                <li><code>a</code> ― гиперссылки</li>
-                <li><code>em</code> ― акцентирование</li>
-            </ul>
-        </script>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Таблицы в HTML</h2>
-        <script type="snippet" lang="html">
-            <table border="1">
-                <caption>квартальный отчет</caption>
-                <thead> 
-                    <tr>
-                        <td>дата</td>
-                        <td colspan="2">доход</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th rowspan="2">2011-01-01</th>
-                        <td>100500</td> <td>33</td>
-                    </tr>
-                    <tr>
-                        <td>100</td> <td>500</td>
-                    </tr>
-                </tbody>
-            </table> 
-        </script>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Таблицы в HTML</h2>
-        <img src="pictures/table.png">
-    </div></section>
-
-    <section class="slide shout"><div>
-        <h2>Гиперссылки</h2>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Гиперссылки</h2>
-        <script type="snippet" lang="html">
-            <a href="http://duckduckgo.com" target="_blank">
-                <img src="duck.png">
-            </a>
-        </script>
-        <ul>
-            <li><code>href</code> - URL гиперссылки</li>
-            <li><code>target</code> - в каком окне открывать ссылку</li>
-            <li><code>name</code> - имя якоря, вместо <code>href</code></li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Действия браузера при переходе</h2>
-        <p>
-            Поведение браузера зависит от протокола в URL
-            <ul>
-                <li><code>http</code>, <code>https</code>, <code>ftp</code> - переход по ссылке</li>
-                <li><code>mailto</code> - запуск почтового клиента</li>
-                <li><code>javascript</code> - выполнение JavaScript кода</li>
-                <li><code>#anchor</code> - прокрутка текущей страницы</li>
-            </ul>
-        </p>
-    </div></section>
-
-    <section class="slide shout"><div>
-        <h2>Формы</h2>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Формы</h2>
-        <script type="snippet" lang="html">
-            <form method="POST" action="/add/" 
-                  enctype="multipart/form-data" target="frame3">
-              <input name="image" type="file">
-              <input name="id" type="hidden" value="3">
-              <input name="nick" type="text">
-              <input type="submit" value="Отправить">
-              <button type="submit" name="action" value="more">
-                 Все равно отправить
-              </button>
-            </form> 
-        </script>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Аттрибуты формы</h2>
-        <ul>
-            <li><code>action</code> - URL на который будет отправлена форма</li>
-            <li><code>metod</code> - HTTP метод, GET или POST</li>
-            <li><code>target</code> - имя окна браузера, в котором открыть результат</li>
-            <li><code>enctype</code> - способ кодирования данных формы. По умолчанию - <code>application/x-www-form-urlencoded</code>. 
-                Если форма содержит поля для ввода файлов, то должно быть <code>multipart/form-data</code>
-            </li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>application/x-www-form-urlencoded</h2>
-        <p>
-            Это способ кодирования данных формы для передачи через URL.<br>
-            Допустим есть форма со следующими данными:
-            <script type="snippet" lang="plain">
-                id: 3
-                name: Вася
-                friend_id: [4, 5]
-            </script>
-            В закодированном виде это буде выглядеть так:
-            <code>id=3&name=%D0%92%D0%B0%D1%81%D1%8F&friend=4&friend=5</code>
-        </p>
-    </div></section>
-
-    <section class="slide shout"><div>
-        <h2>Поля ввода данных</h2>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Элементы ввода формы</h2>
-        <ul>
-            <li><code>input</code> - универсальное поле, может быть:
-                <ul>
-                    <li><code>type="hidden"</code> - невидимое</li>
-                    <li><code>type="text"</code> - текстовое поле</li>
-                    <li><code>type="checkbox"</code> - checkbox, переключатель да/нет</li>
-                </ul>
-            </li>
-            <li><code>button</code> - кнопка</li>
-            <li><code>textarea</code> - многострочное поле ввода</li>
-            <li><code>select</code>,<code>option</code> - выпадающий список</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Аттрибуты элементов ввода</h2>
-        <script type="snippet" lang="html">
-            <input type="text" name="username" 
-                value="" placeholder="Вася" autocomplete="off">
-        </script>
-        <ul>
-            <li><code>type</code> - определяет внешний вид и функционал</li>
-            <li><code>name</code> - имя с которым данный элемент попадет в запрос</li>
-            <li><code>value</code> - начальное знаечение, пользователь может изменить</li>
-            <li><code>placeholder</code> - подсказка для пользователя</li>
-        </ul>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Подробное руководство</h2>
-        <p>
-            <h2><a href="http://htmlbook.ru/">htmlbook.ru</a></h2>
-        </p>
-    </div></section>
-
-    <!-- http://www.evolutionoftheweb.com -->
     <div class="progress"><div></div></div>
     <script src="../js/highlight.pack.js"></script>
     <script src="../node_modules/shower-core/shower.min.js"></script>
