@@ -146,7 +146,7 @@
 * WebSocket
 * Механизм обновления (Upgrade) соединений
 
--- TODO:
+TODO:
 
 ## Дополнительные технологии
 * Очереди сообщений
@@ -158,7 +158,7 @@
 * proxy caching
 * memcached
 
--- TODO2:
+TODO2:
 
 * Расширения протокола HTTP
 * HTTP/2.0 и SPDY
