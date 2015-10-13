@@ -146,11 +146,11 @@
     <section class="slide"><div>
         <h2>Отдача статических документов</h2>
         <script type="snippet" lang="nginx">
-            location ~* ^.+\.(jpg|jpeg|gif)$ {
+            location ~* ^.+\.(jpg|jpeg|gif|png)$ {
                 root        /www/images;
             }
             location /sitemap/ {
-                alias /home/www/generated;
+                alias /home/www/generated/;
             }
         </script>
         <code>/2015/10/ae2b5.png</code> → <code>/www/images/2015/10/ae2b5.png</code><br>
