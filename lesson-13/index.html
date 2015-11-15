@@ -246,7 +246,7 @@
         <h2>Свой ModelManager</h2>
         <p style="font-size: 85%">
         <script type="snippet" lang="python">
-            class PostManager(model.Manager):
+            class PostManager(models.Manager):
                 def main(self, since, limit=10):
                     qs = self.order_by('-id')
                     res = []
