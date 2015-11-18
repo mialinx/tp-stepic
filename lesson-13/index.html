@@ -42,13 +42,13 @@
             urlpatterns = [
                 url(r'^post/(?P<slug>\w+)/$', post_details, 
                     name='post-details'),        
-                url(r'^tag/^(?P<slug>\w+)/$', tag_details, 
+                url(r'^tag/(?P<slug>\w+)/$', tag_details, 
                     name='tag-details'),        
             ]
         </script>
         <p>
             Часто на объекты ссылаются не по <b>id</b>, а по <b>slug</b>.
-            Это позволяет строить более запоминающиейся для человека URL.
+            Это позволяет строить более запоминающиеся для человека URL.
         </p>
     </div></section>
 
@@ -194,7 +194,7 @@
         <h3>Методы</h3>
         <ul>
             <li><code>has_next()</code>/<code>has_previous()</code> - наличие соседней страницы</li>
-            <li><code>next_page_number()</code>/<code>next_page_number()</code></li>
+            <li><code>next_page_number()</code>/<code>previous_page_number()</code></li>
             <li><code>start_index()</code>/<code>end_index()</code> - номера первого и последнего объектов на странице</li>
         </ul>
     </div></section>
