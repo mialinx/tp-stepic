@@ -87,7 +87,7 @@
         <ul>
             <li><code>html</code> - обертка</li>
             <li><code>head</code> - заголовок страницы, не отображается</li>
-            <li><code>body</code> - тело страницы, то что видит пользователь</li>
+            <li><code>body</code> - тело страницы, то, что видит пользователь</li>
         </ul>
     </div></section>
 
@@ -109,7 +109,7 @@
                 <code>&lt;link rel="stylesheet" href="/style.css"&gt;</code><br>
                 <code>&lt;link rel="alternate" href="/news.rss" type="application/rss+xml"&gt;</code>
             </li>
-            <li><code>script</code> - загрузка JavasScript<br>
+            <li><code>script</code> - загрузка JavaScript<br>
                 <code>&lt;script src="./jquery.js" charset="windows-1251" async&gt;&lt;/script&gt;</code>
             </li>
         </ul>
@@ -119,7 +119,7 @@
         <h2>Рекомендацим по link и script</h2>
         <p>Загрузку CSS (тэг <code>link</code>) рекомендуется ставить в тэге <code>head</code>,
             а загрузку JavaScript (тэг <code>script</code>) - наоборот ближе к концу странице.
-            Это повышает скоросоть отрисовки страницы.
+            Это повышает скорость отрисовки страницы.
         </p>
     </div></section>
 
@@ -257,7 +257,7 @@
     <section class="slide"><div>
         <h2>Аттрибуты формы</h2>
         <ul>
-            <li><code>action</code> - URL на который будет отправлена форма</li>
+            <li><code>action</code> - URL, на который будет отправлена форма</li>
             <li><code>metod</code> - HTTP метод, GET или POST</li>
             <li><code>target</code> - имя окна браузера, в котором открыть результат</li>
             <li><code>enctype</code> - способ кодирования данных формы. По умолчанию - <code>application/x-www-form-urlencoded</code>. 
@@ -302,14 +302,14 @@
     </div></section>
 
     <section class="slide"><div>
-        <h2>Аттрибуты элементов ввода</h2>
+        <h2>Атрибуты элементов ввода</h2>
         <script type="snippet" lang="html">
             <input type="text" name="username" 
                 value="" placeholder="Вася" autocomplete="off">
         </script>
         <ul>
             <li><code>type</code> - определяет внешний вид и функционал</li>
-            <li><code>name</code> - имя с которым данный элемент попадет в запрос</li>
+            <li><code>name</code> - имя, с которым данный элемент попадет в запрос</li>
             <li><code>value</code> - начальное знаечение, пользователь может изменить</li>
             <li><code>placeholder</code> - подсказка для пользователя</li>
         </ul>

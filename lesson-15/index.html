@@ -38,7 +38,7 @@
     <section class="slide"><div>
         <h2>Заголовки и коды ответа</h2>
         <ul>
-            <li><code>401 Unauthorized</code> - для доступа к ресурсу нужна атворизация</li>
+            <li><code>401 Unauthorized</code> - для доступа к ресурсу нужна авторизация</li>
             <li><code>WWW-Authenticate: Basic realm="admin"</code> - запрос логина/пароля для раздела admin</li>
             <li><code>Authorization: Basic Z2l2aTpkZXJwYXJvbA==</code> - передача логина/пароля в виде 
                 <code>base64(login + ':' + password)</code></li>
@@ -75,7 +75,7 @@
     </div></section>
 
     <section class="slide"><div>
-        <h2>Аттрибуты Cookie</h2>
+        <h2>Атрибуты Cookie</h2>
         <ul>
             <li><code>name=value</code> - имя и значение cookie</li>
             <li><code>Expires</code> - время жизни cookie, по умолчанию - до закрытия окна.</li>
@@ -113,7 +113,7 @@
 
     <section class="slide"><div>
         <h2>Правила выбора Cookies</h2>
-        Путсть URL=<code>http://my.app.site.com/blog/post/12</code><br>
+        Пусть URL=<code>http://my.app.site.com/blog/post/12</code><br>
         Браузер выберет все cookies, у которых:
         <ul>
             <li>Не истек срок <code>Expires</code></li>
@@ -321,7 +321,7 @@
     <section class="slide"><div>
         <h2>Безопасность паролей</h2>
         <p>
-            Главная задача - максимально затруднить доступ злоумышленика к исходному паролю пользователя.
+            Главная задача - максимально затруднить доступ злоумышленника к исходному паролю пользователя.
             Меры безопасности:
             <ul>
                 <li>Отправка формы входа (login / password) по <b>https</b></li>
@@ -338,7 +338,7 @@
             Меры безопасности:
             <ul>
                 <li>Ключ сессии невозможно подобрать перебором</li>
-                <li><code>HttpOnly</code> флаг для сессионой cookie</li>
+                <li><code>HttpOnly</code> флаг для сессионной cookie</li>
                 <li>Привязка сессии к IP адресу</li>
                 <li>Ограничение сессий по времени</li>
                 <li>Запрос пароля при критических действиях: смене пароля и т.д.</li>

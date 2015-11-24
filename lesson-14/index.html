@@ -39,7 +39,7 @@
         <h2>Best practice</h2>
         <ul>
             <li><b>Всегда</b> проверять пользовательские данные</li>
-            <li>Для форм, изменяющих данные использовать метод <b>POST</b></li>
+            <li>Для форм, изменяющих данные, использовать метод <b>POST</b></li>
             <li>Не заставлять вводить данные повторно</li>
             <li>Сообщать об ошибках детально - по полям</li>
             <li>Сообщать об успешном сохранении формы</li>
@@ -61,7 +61,7 @@
         <ul>
             <li><code>302 Found</code> - временное перенаправление</li>
             <li><code>301 Moved Permanently</code> - постоянное перенаправление (кешируется в браузере)</li>
-            <li><code>Location: url</code> - URL для повторного запроса. Может быть как абсолютным так и относительным.</li>
+            <li><code>Location: url</code> - URL для повторного запроса. Может быть как абсолютным, так и относительным.</li>
         </ul>
     </div></section>
 
@@ -130,7 +130,7 @@
             <li><code>BooleanField</code> - флажок</li>
             <li><code>CharField</code> - текстовое поле ввода</li>
             <li><code>EmailField</code> - текстовое поле, Email</li>
-            <li><code>PaswordField</code> - текстовое поле, пароль</li>
+            <!--li><code>PasswordField</code> - текстовое поле, пароль</li-->
             <li><code>ChoiceField</code> - выбор из нескольких вариантов</li>
             <li><code>DateField</code> - выбор даты</li>
             <li><code>DateTimeField</code> - выбор даты и времени</li>
@@ -237,7 +237,7 @@
                         raise ValidationError(u'Доступ ограничен')
                 def save(self):
                     self.cleaned_data['author'] = self._user
-                    return Post.object.create(**self.cleaned_data)
+                    return Post.objects.create(**self.cleaned_data)
         </script>
     </div></section>
 
