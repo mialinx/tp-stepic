@@ -196,7 +196,24 @@
     </div></section>
 
     <section class="slide"><div>
-        <h2>Декоратор для CORS</h2>
+        <h2>CORS на клиенте</h2>
+        <script type="snippet" lang="javascript">
+            $.ajax({
+                url:  'https://site.com/blog/comments/add/', 
+                type: 'POST',
+                data: { post_id: 12, text: 'Занятная идея!' },
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                }
+            }).success(function(data) {
+                // ...
+            });
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>CORS на сервере</h2>
         <script type="snippet" lang="python">
             def allow_cors(view):
                 def view2(request, *args, **kwargs):
