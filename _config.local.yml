@@ -1,0 +1,5 @@
+# URL
+baseurl:            ""
+# URL for static files
+assets_url:         "/assets"
+pictures_url:       "/pictures"
