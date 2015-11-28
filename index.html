@@ -1,0 +1,17 @@
+---
+layout: page
+---
+<div class="content list">
+    {% assign items = site.lessons | sort:'num' %}
+    {% for lesson in items %}
+    <div class="list-item">
+        <h2 class="list-post-title">
+            <a href="{{ site.baseurl }}{{ lesson.url }}">{{ lesson.num }}. {{ lesson.title }}</a>
+        </h2>
+        <div class="list-post-date">
+            {{ lesson.description }}
+            <a href="{{ site.baseurl}}/pdf/{{ lesson.url | slugify }}.pdf"><small>&darr; pdf</small></a>
+        </div>
+    </div>
+    {% endfor %}
+</div>

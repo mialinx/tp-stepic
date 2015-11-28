@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>{{ site.name }}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=792, user-scalable=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <link rel="stylesheet" href="{{ site.baseurl }}/node_modules/shower-bright/styles/screen.css">
+        <link rel="stylesheet" href="{{ site.assets_url }}/css/highlight/github.css">
+        <link rel="stylesheet" href="{{ site.assets_url }}/css/lesson.css">
+    </head>
+    <body class="list">
+        <header class="caption">
+            <h1><a class="link-no-line link-no-color" href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
+            <p>
+                {% comment %} prev/next page [hack for old jekyll v2.4.0 on GH pages] {% endcomment %}
+                {% assign lessons = site.lessons | sort:'num' %}
+
+                {% for lesson in lessons %}{% if lesson.num == page.num %}
+
+                {% unless forloop.first%}{% assign prev_i = forloop.index0 | minus: 1 %}
+                    <a class="link-no-line" href="{{ site.baseurl }}{{ lessons[prev_i].url }}" title="{{ lessons[prev_i].num }}. {{ lessons[prev_i].title }}">&larr;</a>
+                {% endunless %}
+                
+                {{ page.num }}. {{ page.title }}
+
+                {% unless forloop.last %}{% assign next_i = forloop.index0 | plus: 1 %}
+                    <a class="link-no-line" href="{{ site.baseurl }}{{ lessons[next_i].url }}" title="{{ lessons[next_i].num }}. {{ lessons[next_i].title }}">&rarr;</a>
+                {% endunless %}
+
+                {% endif %}{% endfor %}
+            </p>
+            <p><a href="{{ site.author.url }}">{{ site.author.name }}</a></p>
+        </header>
+
+        {{ content }}
+
+        <div class="progress"><div></div></div>
+        <script src="{{ site.assets_url }}/js/highlight.pack.js"></script>
+        <script src="{{ site.baseurl }}/node_modules/shower-core/shower.min.js"></script>
+        <script src="{{ site.assets_url }}/js/init.js"></script>
+    </body>
+</html>

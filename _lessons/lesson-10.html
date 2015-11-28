@@ -1,0 +1,435 @@
+---
+num: 10
+title: MVC фреймворки (2)
+description: "Контроллеры в Django. Объекты HttpRequest и HttpResponse. Получение GET и POST параметров. Работа с HTTP заголовками в Django. Декораторы. Шаблонизация в Django. Наследование шаблонов. Context processors."
+---
+
+<section class="slide shout">
+    <div>
+        <h2>Django Views</h2>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Django Views</h2>
+        <p>
+            Контроллеры в Django - это обычные функции, которые:
+            <ul>
+                <li>принимают объект <code>django.http.HttpRequest</code><br>первым параметром</li>
+                <li>возвращают объект <code>django.http.HttpResponse</code></li>
+            </ul>
+        </p>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Django Views</h2>
+        <script type="snippet" lang="python">
+            # /blog/post_text/?id=123
+            def post_text(request):
+                try:
+                    id = request.GET.get('id')
+                    obj = Post.objects.get(pk=id)
+                except Post.DoesNotExist:
+                    raise Http404
+                return HttpResponse(obj.text, 
+                        content_type='text/plain')
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Захват параметров из URL</h2>
+        <script type="snippet" lang="python">
+            # blog/urls.py
+
+            url(r'^category/(\d+)/$', 'category_view')
+
+            url(r'^(?P<pk>\d+)/$', 'post_detail')
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Захват параметров из URL (2)</h2>
+        <script type="snippet" lang="python">
+            # blog/views.py
+
+            def category_view(request, pk=None):
+                # вывести все посты
+
+            def post_details(request, pk):
+                # вывести страницу поста
+
+            def category_view(request, *args, **kwargs):
+                pk = args[0]
+                pk = kwargs['pk']
+        </script>
+    </div>
+</section>
+
+<section class="slide shout">
+    <div>
+        <h2>HttpRequest и HttpResponse</h2>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>HttpRequest</h2>
+        <ul>
+            <li><code>request.method</code> - метод запроса</li>
+            <li><code>request.GET</code> - словарь с GET параметрами</li>
+            <li><code>request.POST</code> - словарь с POST параметрами </li>
+            <li><code>request.COOKIES</code> - словарь c Cookie</li>
+            <li><code>request.FILES</code> - загруженныe файлы</li>
+            <li><code>request.META</code> - CGI-like переменные</li>
+            <li><code>request.session</code> - словарь-сессия (*)</li>
+            <li><code>request.user</code> - текущий пользователь (*)</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>HttpResponse</h2>
+        <script type="snippet" lang="python">
+            from django.http import HttpResponse
+            # создание ответа
+            response = HttpResponse("<html>Hello world</html>")
+            # установка заголовков
+            response['Age'] = 120
+            # установка всех параметров
+            response = HttpResponse(
+                content = '<html><h1>Ничего</h1></html>',
+                content_type = 'text/html',
+                status = 404,
+            )
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Специальные типы ответов</h2>
+        <script type="snippet" lang="python">
+            from django.http import HttpResponseRedirect, \
+                HttpResponseNotFound, HttpResponseForbidden, \
+                HttpResponsePermanentRedirect
+
+            redirect = HttpResponseRedirect("/")          # 302
+            redirect = HttpResponsePermanentRedirect("/") # 301
+            response = HttpResponseNotFound()             # 404
+            response = HttpResponseForbidden()            # 403
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Получение GET и POST параметров</h2>
+        <script type="snippet" lang="python">
+            order = request.GET['sort'] # опасно!
+            if order == 'rating':
+                queryset = queryset.order_by('rating')
+            page = request.GET.get('page') or 1
+            try:
+                page = int(page)
+            except ValueError:
+                return HttpResponseBadRequest()
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>GET и POST - объекты QueryDict</h2>
+        <p><code>/path/?id=3&id=4&id=5</code></p>
+        Получение множественных значений
+        <script type="snippet" lang="python">
+            id = request.GET.get('id')     # id is 5
+            id = request.GET.getlist('id') # id is [3,4,5]
+        </script>
+        Сериализация
+        <script type="snippet" lang="python">
+            qs = request.GET.urlencode()
+            # qs is 'id=3&id=4&id=5'
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Получение и установка HTTP заголовков</h2>
+        <script type="snippet" lang="python">
+            user_agent = request.META.get('HTTP_USER_AGENT')
+            user_ip = request.META.get('HTTP_X_REAL_IP')
+            if user_ip in None:
+                user_ip = request.META.get('REMOTE_ADDR')
+        </script>
+        <script type="snippet" lang="python">
+            response = HttpResponse(my_data,
+                content_type='application/vnd.ms-excel')
+            response['Content-Disposition'] = \
+                'attachment; filename="foo.xls"'
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Получение и установка Cookie</h2>
+        <script type="snippet" lang="python">
+            response = HttpResponse(html)
+            response.set_cookie('visited', '1') 
+        </script>
+        <script type="snippet" lang="python">
+            is_visited = request.COOKIES.get('visited')
+        </script>
+    </div>
+</section>
+
+<section class="slide shout">
+    <div>
+        <h2>Декораторы</h2>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Декораторы в Python</h2>
+        <p>Декоратор – функция, преобразующая одну функцию в другую.</p>
+        <script type="snippet" lang="python">
+            def double_it(func):
+                def tmp(*args):
+                    return func(*args) * 2
+            return tmp
+
+            @double_it
+            def mult(a, b): 
+                return a*b
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Декораторы в Django</h2>
+        <script type="snippet" lang="python">
+            from django.views.decorators.http import require_POST
+            @require_POST
+            def like(request):
+                pass
+        </script>
+        <ul>
+            <li><code>@require_GET</code> – только GET запросы</li>
+            <li><code>@require_POST</code> – только POST запросы</li>
+            <li><code>@login_required(login_url='/login/')</code></li>
+            <li><code>@csrf_exempt</code> – отключить проверку CSRF</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide shout">
+    <div>
+        <h2>Шаблонизация</h2>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Неправильный подход</h2>
+        <script type="snippet" lang="python">
+            def header():
+                return '<html><head>...</head><body>'
+
+            def footer():
+                return '</body></html>'
+
+            def page1(data):
+                return header() + \ 
+                   '<h1>' + data['title'] + '</h1>' + \
+                   '<p>' + data['text'] + '</p>' + \
+                   footer()
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Правильный подход</h2>
+        <p>Необходимо отделить данные (<b>контекст</b>) от представления (<b>шаблона</b>). Для этого используются <b>шаблонизаторы</b>.</p>
+        <ul>
+            <plus>Разделение работы web-мастера и программиста</plus>
+            <plus>Повторное использование HTML кода</plus>
+            <plus>Более чистый python код</plus>
+        </ul>
+    </p>
+</div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Синтаксис шаблонов</h2>
+        <script type="snippet" lang="django"> {% raw %}
+            <!-- templates/blog/post_details.html -->
+            <html>
+                <head>...</head>
+                <body>
+                    <h1>{{ post.title|truncatechars:80 }}</h1>
+                    <p>{{ post.text }}></p>
+                    {% for comment in comments %}
+                        {% include "blog/comment.html" %}
+                    {% endfor %}
+                </body>
+            </html>
+        {% endraw %}</script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Вызов шаблонизатора</h2>
+        <script type="snippet" lang="python">
+            # project/blog/views.py
+            from django.shortcuts import render, render_to_response
+
+            return render_to_response('blog/post_details.html', { 
+                'post': post,
+                'comments': comments,
+            })
+
+            return render(request, 'blog/post_details.html', { 
+                'post': post,
+                'comments': comments,
+            })
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Возможности шаблонизатора</h2>
+        <ul> {% raw %}
+            <li><code>{% for item in list %}{% endfor %}</code> - итерация по списку</li>
+            <li><code>{% if var %}{% endif %}</code> - условное отображение</li>
+            <li><code>{% include "tpl.html" %}</code> - включение подшаблона</li>
+            <li><code>{{ var }}</code> - вывод переменной</li>
+            <li><code>{{ var|truncatechars:9 }}</code> - применение фильтров</li>
+            <li><code>{# comment #}</code>, <code>{% comment %}{% endcomment %}</code> - комментарии</li>
+        {% endraw %} </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Доступ к свойствам и методам</h2>
+        Через точку можно получить свойство, метод, ключ либо индекс объекта:
+        <script type="snippet" lang="django"> {% raw %}
+            {{ object.content }}
+            {{ name.strip }}
+            {{ info.avatar }}
+            {{ post_list.0 }}
+        {% endraw %} </script>
+        Передавать параметры методам запрещено:
+        <script type="snippet" lang="django"> {% raw %}
+            {{ post_list.order_by('id') }} <!-- ошибка -->
+            {{ post_list.delete }}
+        {% endraw %} </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Особенности шаблонизатора</h2>
+        <ul>
+            <li>Шаблоны автоматически экранируют HTML сущности</li>
+            <li>Шаблонизатор можно расширять своими фильтрами и тэгами</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide shout">
+    <div>
+        <h2>Наследование шаблонов</h2>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <img src="{{ site.pictures_url }}/lesson-10/mockup.png" class="place">
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Базовый шаблон base.html</h2>
+        <script type="snippet" lang="django">
+            {% raw %}
+            <!DOCTYPE HTML>
+            <html>
+            <head>
+                <title>{% block title %}Q&A{% endblock %}</title>
+                {% block extrahead %}{% endblock %}
+            </head>
+            <body>
+                <h1>Вопросы и ответы</h1>
+                {% block content %}{% endblock %}
+            </body>
+            </html>
+            {% endraw %}
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Шаблон главной страницы</h2>
+        <script type="snippet" lang="django"> {% raw %}
+            {% extends "base.html" %}
+            {% block title %}
+              {{ block.super }} – главная
+            {% endblock %}
+            {% block content %}
+                {% for obj in post_list %}
+                <div class="question">
+                    <a href="{{ obj.build_url }}">{{ obj }}</a>
+                    {{ obj.created_date|date:"d.m.Y" }}
+                </div>
+                {% endfor %}
+            {% endblock %}
+        {% endraw %}</script>
+    </div>
+</section>
+
+<section class="slide shout">
+    <div>
+        <h2>Context processors</h2>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Context processors</h2>
+        <p>Context processors - это функции, которые вызываются перед отрисовкой шаблона и могут добавить данных в контекст.</p>
+        Настройка <code>TEMPLATE_CONTEXT_PROCESSORS</code>:
+        <ul>
+            <li><code>django.core.context_processors.request</code> (request)</li>
+            <li><code>django.core.context_processors.csrf</code> (csrf_token)</li>
+            <li><code>django.core.context_processors.static</code> (STATIC_URL)</li>
+            <li><code>django.contrib.auth.context_processors.auth</code> (user, perms)</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Когда не вызываются context processors ?</h2>
+        <p><code>render(request, template_name, context)</code> - вызывает.</p>
+        <p><code>render_to_response(template_name, context)</code> - не вызывает.</p>
+    </div>
+</section>

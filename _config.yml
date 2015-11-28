@@ -1,0 +1,40 @@
+# Basic
+name:               "Web технологии"
+
+# URL
+baseurl:            "/tp-stepic"
+permalink:          /:title/
+
+# Markdown
+markdown:           kramdown
+
+# Sass
+sass:
+  style:            :compressed
+
+# URL for static files
+assets_url:         "/tp-stepic/assets"
+pictures_url:       "/tp-stepic/pictures"
+
+# these files will be copied to destination
+keep_files:         ["assets", "node_modules", "pdf", "pictures"]
+
+# Collections
+collections:
+  lessons:
+    output: true
+    permalink:      /:name/
+
+# Scopes
+defaults:
+  -
+    scope:
+      path:         ""
+      type:         "lessons"
+    values:
+      layout:       "lesson"
+
+# Site info
+author:
+  name: "Дмитрий Смаль"
+  url: "https://github.com/mialinx/"
