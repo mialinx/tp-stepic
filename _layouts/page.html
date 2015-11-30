@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% if page.title %}{{ page.title }}{% else %}{{ site.name }}{% endif %}</title>
+        <link rel="stylesheet" href="{{ site.assets_url }}/css/page.css">
+    </head>
+    <body>
+        <div class="container">
+            <header class="masthead">
+                <h1 class="masthead-title">
+                    <a href="{{ site.baseurl }}/">{{ site.name }}</a>
+                </h1>
+                <nav class="masthead-nav">
+                    <a href="{{ site.author.url }}">{{ site.author.name }}</a>
+                </nav>
+            </header>
+            {{ content }}
+        </div>
+    </body>
+</html>

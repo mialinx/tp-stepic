@@ -1,0 +1,247 @@
+---
+num: 5
+title: Сетевые протоколы
+description: "DNS. Домены и зоны, делегирование. Рекурсивные запросы. TCP. Понятие порта. TCP handshake. TCP клиент и сервер. TLS."
+---
+
+<section class="slide shout">
+    <div>
+        <h2>Как происходит HTTP запрос ?</h2>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Как происходит HTTP запрос ?</h2>
+        <ul>
+            <li>Браузер анализирует введенный URL и извлекает имя хоста</li>
+            <li>Используя систему DNS, браузер преобразует домен в ip адрес</li>
+            <li>Устанавливает TCP соединение с web-сервером</li>
+            <li>Если протокол https, устанавливает TLS соединение поверх TCP</li>
+            <li>Формирует HTTP запрос, отправляет его, HTTP ответ</li>
+            <li>Браузер закрывает соединение (для HTTP/1.0)</li>
+            <li>Далее процесс парсинга и отображения документа ...</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <img src="{{ site.pictures_url }}/lesson-05/stack.png" class="place" >
+    </div>
+</section>
+
+<section class="slide shout">
+    <div>
+        <h2>DNS</h2>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Domain Name System</h2>
+        <p>DNS - это распределенная база данных, хранящая информацию о доменах, в первую очередь
+            отображение доменных имен на IP адреса машин, обслуживающих эти домены</p>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Пространство доменных имен</h2>
+        <img src="{{ site.pictures_url }}/lesson-05/domains.png" >
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Домены и зоны</h2>
+        <p>База DNS разделена на <b>зоны</b>. Каждая зона находится под единым административным контролем. 
+            Проще говоря обслуживается одной организацией.</p>
+        <p>Хранение информации о доменах более высокого уровня может быть <b>делегировано</b> другим зонам.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <img src="{{ site.pictures_url }}/lesson-05/zones.png" class="place" >
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <img src="{{ site.pictures_url }}/lesson-05/dnsreq.png" class="place" >
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Что содержит зона DNS сервера ?</h2>
+        <ul>
+            <li>A - IPv4 адрес(а) для данного домена</li>
+            <li>AAAA - IPv6 адрес(а)</li>
+            <li>NS - адрес(a) DNS серверов обслуживающих данную зону</li>
+            <li>MX - адрес(а) почтовых серверов для данного домена</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide shout">
+    <div>
+        <h2>TCP</h2>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Зачем нужен TCP ?</h2>
+        <p>TCP - протокол, обеспечивающий надежную последовательную доставку данных. 
+            Фактически, TCP предоставляет интерфейс, похожий на файловый ввод/вывод для сетевых соединений.</p>
+        <ul>
+            <li>Надежная доставка</li>
+            <li>Полнодуплексная передача</li>
+            <li>Контроль потока - защита от переполнения</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>TCP порты</h2>
+        <p>TCP порт - это &laquo;адрес&raquo; сетевого соединения в пределах одного хоста. 
+            TCP порты позволяют поддерживать множество открытых соединений на одной машине.</p>
+        <p>Номер порта - целое число, не больше 65535. Порты ниже 1024 требуют 
+            привилегий суперпользователя для использования.</p>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Стандартные TCP порты</h2>
+        <ul>
+            <li>20,21 - FTP</li>
+            <li>22 - SSH</li>
+            <li>25 - SMTP</li>
+            <li>80 - HTTP</li>
+            <li>443 - HTTPS</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Установление TCP соединения</h2>
+        <img src="{{ site.pictures_url }}/lesson-05/tcp.png">
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Пример TCP клиента</h2>
+        <script type="snippet" lang="python">
+            import socket
+            req = "Hello tcp!"
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect(('127.0.0.1', 1234))
+            s.send(req)
+            rsp = s.recv(1024)
+            s.close()
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Пример TCP сервера</h2>
+        <script type="snippet" lang="python">
+            import socket
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.bind(('127.0.0.1', 1234))
+            s.listen(10)
+            while True:
+                conn, addr = s.accept()
+                while True:
+                    data = conn.recv(1024)
+                    if not data: break
+                    conn.send(data)
+                conn.close()
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Как правильно читать данные из сокета ?</h2>
+        <script type="snippet" lang="python">
+            def myreceive(sock, msglen):
+                msg = ''
+                while len(msg) < msglen:
+                    chunk = sock.recv(msglen-len(msg))
+                    if chunk == '':
+                        raise RuntimeError("broken")
+                    msg = msg + chunk
+                return msg
+        </script>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Как правильно записывать данные в сокет ?</h2>
+        <script type="snippet" lang="python">
+            def mysend(sock, msg):
+                totalsent = 0
+                while totalsent < len(msg):
+                    sent = sock.send(msg[totalsent:])
+                    if sent == 0:
+                        raise RuntimeError("broken")
+                    totalsent = totalsent + sent
+        </script>
+    </div>
+</section>
+
+
+<section class="slide shout">
+    <div>
+        <h2>TLS</h2>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>TLS - Transport Layer Security</h2>
+        <p>TLS (а ранее SSL) - криптографический протокол, обеспечивающий безопасную передачу данных между хостами в Internet.</p>
+        <ul>
+            <li>Аутентификация сервера (и клиента)</li>
+            <li>Шифрование и сжатие передаваемой информации</li>
+            <li>Защита от подмены и проверка целостности сообщений</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Установление TLS соединения</h2>
+        <img src="{{ site.pictures_url }}/lesson-05/tls.png">
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <ul>
+            <li>ClientHello - клиент указывает желаемые опции соединения</li>
+            <li>ServerHello - сервер подтверждает опции соединения</li>
+            <li>Certificate - сервер посылает клиенту свой сертификат</li>
+            <li>Клиент проверяет сертификат. <br>На данном этапе соединение может быть отклонено</li>
+            <li>ClientKeyExchange - клиент отправляет серверу ключ симметричного шифрования (или параметры для его генерации)</li>
+            <li>Finished - сервер подтверждает завершение рукопожатия</li>
+        </ul>
+    </div>
+</section>
+
+<section class="slide">
+    <div>
+        <h2>Неутешительный вывод</h2>
+        <p>Установление TCP и TLS соединения требует существенного времени. Минимум 1 RTT для TCP соединения и 1-2 RTT для TLS соединения.</p>
+        <p>Под RTT понимается Round Trip Time - время, необходимое для передачи IP дейтаграммы к серверу и обратно.</p>
+    </div>
+</section>
