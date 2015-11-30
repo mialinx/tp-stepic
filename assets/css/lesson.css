@@ -21,8 +21,8 @@
 img.center { display: block; margin: auto; }
 
 plus, minus { display: list-item; list-style-type: none; }
-plus:before { display: inline; content: "➕"; font-weight: bold; margin-right: 0.5em; color: green }
-minus:before { display: inline; content: "➖"; font-weight: bold; margin-right: 0.5em; color: red }
+plus:before { display: inline; content: "➕"; margin-right: 0.5em; color: green }
+minus:before { display: inline; content: "➖"; margin-right: 0.5em; color: red }
 
 .link-no-line { background: none; }
 .link-no-color { color: rgb(85, 85, 85); }
