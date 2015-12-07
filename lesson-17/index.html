@@ -160,25 +160,6 @@
     </div></section>
 
     <section class="slide"><div>
-        <h2>Отправка сообщений</h2>
-        <script type="snippet" lang="python">
-            import urllib2
-            import json
-            def send_message(request):
-                cid = request.GET.get('to')
-                text = request.GET.get('text')
-                url = 'http://127.0.0.1/publish/?cid=' + cid
-                body = json.dumps({ 'messages': [ text ] })
-                request = urllib2.Request(url, body, {})
-                response = urllib2.urlopen(request) # может быть долгим
-                if response.getcode() == 200:
-                    return HttpResponseAjax()
-                else:
-                    return HttpResponseAjaxError(code=response.getcode())
-        </script>
-    </div></section>
-
-    <section class="slide"><div>
         <h2>Плюсы и минусы Comet</h2>
         <ul>
             <plus>Поддержка всеми браузерами</plus>
@@ -266,18 +247,47 @@
     <section class="slide"><div>
         <h2>WebSocket на стороне сервера</h2>
         <script type="snippet" lang="python">
-            class EchoWebSocket(tornado.websocket.WebSocketHandler):
+            registry = {}
+
+            class WSHandler(tornado.websocket.WebSocketHandler):
                 def open(self):
-                    print("WebSocket opened")
-
-                def on_message(self, message):
-                    self.write_message(message)
-
+                    self.uid = self.get_argument("uid")
+                    registry[self.uid] = self
+                def check_origin(self, origin):
+                    return True
                 def on_close(self):
-                    print("WebSocket closed")
+                    del registry[self.uid]
         </script>
     </div></section>
 
+    <section class="slide"><div>
+        <h2>WebSocket на стороне сервера (2)</h2>
+        <script type="snippet" lang="python">
+            class MainHandler(tornado.web.RequestHandler):
+                def post(self):
+                    body = self.get_argument("msg")
+                    uid = self.get_argument("uid")
+                    conn = registry.get(uid)
+                    if conn:
+                        conn.write_message(body)
+                        self.write("OK")
+                    else:
+                        self.write("NO")
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>WebSocket на стороне сервера (3)</h2>
+        <script type="snippet" lang="python">
+            if __name__ == "__main__":
+                app = tornado.web.Application([
+                    (r"/pub", MainHandler),
+                    (r"/sub", WSHandler),
+                ])
+                app.listen(8888)
+                tornado.ioloop.IOLoop.current().start()
+        </script>
+    </div></section>
     <section class="slide"><div>
         <h2>Плюсы и минусы WebSocket</h2>
         <ul>
@@ -289,6 +299,36 @@
             <minus>Требуется специальный WebSocket-сервер</minus>
             <minus>Плохо работает с прокси-серверами</minus>
         </ul>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Отправка сообщений</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Отправка сообщений</h2>
+        <script type="snippet" lang="python">
+            import requests # pip install requests
+            import json
+            puburl = 'http://127.0.0.1/publish/'
+            def send_message(request):
+                cid = request.GET.get('to')
+                text = request.GET.get('text')
+                body = json.dumps({ 'messages': [ text ] })
+                try: ## может быть долгим 
+                    resp = requests.post(puburl, params={'cid':cid}, data=body)
+                    if resp.status_code == 200:
+                        return HttpResponseAjax()
+                    else:
+                        return HttpResponseAjaxError(code=resp.status_code)
+                except:
+                    return HttpResponseAjaxError(code=500)
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Отправка через очередь</h2>
+        <img src="pictures/queue.png" class="center">
     </div></section>
 
     <div class="progress"><div></div></div>
