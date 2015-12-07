@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Web технологии</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=792, user-scalable=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="../node_modules/shower-bright/styles/screen.css">
+    <link rel="stylesheet" href="../css/highlight/github.css">
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body class="list">
+
+    <header class="caption">
+        <h1>Web технологии</h1>
+        <p><a href="https://github.com/mialinx/">Дмитрий Смаль</a></p>
+    </header>
+
+    <section class="slide shout"><div>
+        <h2>Фоновые процессы</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Примеры использования</h2>
+        <ul>
+            <li>Массовый импорт данных</li>
+            <li>Массовый экспорт данных</li>
+            <li>Расчет рейтингов (например, лучшие вопросы)</li>
+            <li>Очистка устаревших данных</li>
+            <li>И вообще все периодические работы</li>
+            <li>Статистика, статистика, статистика</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Cron</h2>
+        <img src="pictures/cron.png" class="center">
+        <p><center>Задача = команда оболочки (bash) в linux</center></p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Crontab</h2>
+        <script type="snippet" lang="cron" scale="auto">
+            MAILTO=pupkin@gmail.com
+            PATH=/bin:/usr/bin:/home/project/bin
+            SHELL=/bin/bash
+            1   */3 *   *   *   root   indexer --rotate --all
+            1   1   *   *   *   root   backup.sh 
+            1   3   7   *   *   root   big_backup_all.sh
+            1   *   *   *   *   pupkin /home/ask/manage.py calc_best
+            *   *   *   *   *   pupkin /home/ask/manage.py send_mail
+            #   #   #           #      # команда
+            #   #   #           # пользователь
+            #   #   # день месяца (1-31)
+            #   # час (0-23)
+            # минута (0-59)
+
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Редактирование Crontab</h2>
+        <p>crontab текущего юзера (&laquo;свой&raquo;)</p>
+        <script type="snippet" lang="shell" scale="auto">
+            $ EDITOR=gedit crontab -e
+        </script>
+        <p>crontab администратора</p>
+        <script type="snippet" lang="shell" scale="auto">
+            # EDITOR=gedit crontab -e
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Management команды</h2>
+        <script type="snippet" lang="python" scale="auto">
+            # ask/qa/management/commands/warmcache.py
+            from django.core.management.base import BaseCommand
+
+            class Command(BaseCommand):
+                help = 'generates best users and tags'
+
+                def add_arguments(self, parser): # optparse
+                    parser.add_argument('--users', action='store_true', 
+                        dest='user', default=False, help='generate users')
+                    parser.add_argument('--tags', action='store_true', 
+                        dest='user', default=False, help='generate tags')
+
+                def handle(self, *args, **options):
+                    if options['users']:
+                        # to do
+                    if options['tags']:
+                        # even more do
+        </script>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Кэширование</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Виды кэширования в Django</h2>
+        <ul>
+            <li>Кэширование всего сайта (FetchFromCacheMiddleware)</li>
+            <li>Кэширование отдельного конроллера (@cache_page)</li>
+            <li>Кэширование фрагментов шаблонов</li>
+            <li>Низкоуровневое кэширование (API)</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Кэширование шаблонов</h2>
+        <script type="snippet" lang="django" scale="auto">
+            {% load cache %}
+            {% cache 300 sidebar %}
+                .. sidebar ...
+            {% endcache %}
+        </script>
+        <p>Кэширование с учетом аргументов</p>
+        <script type="snippet" lang="django" scale="auto">
+            {% load cache %}
+            {% cache 300 sidebar request.user.is_authenticated %}
+                .. sidebar for logged? in user ..
+            {% endcache %}
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Использование API</h2>
+        <script type="snippet" lang="python" scale="auto">
+            from django.core.cache import cache # default
+
+            # В management command
+            data = User.objects.best()[:10]
+            data = [ {'id': u.id, 'name': u.name } for d in data ]
+            cache.set('users_key', data, 3600)
+
+            # Во view или template tag:
+            cache.get('users_key')
+        </script>
+    </div></section>
+    
+    <section class="slide"><div>
+        <h2>Механизмы кэширования в Django</h2>
+        <ul>
+            <li><code>LocMemCache</code> - в разделяемой памяти</li>
+            <li><code>FileBasedCache</code> - в файловой системе</li>
+            <li><code>DatabaseCache</code> - в базе данных</li>
+            <li><code>MemcachedCache</code> - в демоне memcached</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Настройки кэшей</h2>
+        <script type="snippet" lang="python" scale="auto">
+            # ask/ask/settings.py
+            CACHES = {
+                'default': {
+                    'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+                    'LOCATION': '127.0.0.1:11211',
+                },
+                'filecache': {
+                    'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+                    'LOCATION': '/var/tmp/django_cache',
+                    'TIMEOUT': 60,
+                    'OPTIONS': {
+                        'MAX_ENTRIES': 1000
+                    }
+                },
+            }
+        </script>
+    </div></section>
+
+    <div class="progress"><div></div></div>
+    <script src="../js/highlight.pack.js"></script>
+    <script src="../node_modules/shower-core/shower.min.js"></script>
+    <script src="../js/init.js"></script>
+
+</body>
+</html>
