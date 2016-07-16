@@ -1,0 +1,344 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Современный JavaScript</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=792, user-scalable=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="../node_modules/shower-bright/styles/screen.css">
+    <link rel="stylesheet" href="../css/highlight/github.css">
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body class="list">
+    <header class="caption">
+        <h1>О дивный новый мир</h1>
+    </header>
+
+    <section class="slide"><div>
+        <img src="img/cat.jpg" class="center" height="90%"/>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>О чем это мы?</h2>
+        <ul>
+            <li>Модульность в JS</li>
+            <li>Пакеты в JS</li>
+            <li>Сборка проекта</li>
+        </ul>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Модули в JS</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Модули в JS</h2>
+        <ul>
+            <li>Hand-made</li>
+            <li>AMD (RequireJS style)</li>
+            <li>CommonJS (Node.js style)</li>
+            <li>UMD (Unified module defenition)</li>
+            <li>ECMA6 modules</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>AMD (Asynchronous module defenition)</h2>
+        <script type="snippet" lang="javascript">
+            define(["jquery", "./utils/foo.js"], 
+            function($, Foo) {
+                // do smth
+                return smth;
+            });
+        </script>
+        <script type="snippet" lang="javascript">
+            require(["./utils/forms.js"], function(Forms) {
+                // do smth
+            });
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Плюсы и минусы AMD</h2>
+        <p>
+            <plus>Работает в браузере</plus>
+            <minus>хитрый синтаксис</minus>
+        </p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>CommonJS (Node.js style)</h2>
+        <script type="snippet" lang="javascript">
+            var $ = require("jquery");
+            var Foo = require("./utils/foo.js");
+            // do smth
+            module.exports = smth; 
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Плюсы и минусы CommonJS</h2>
+        <p>
+            <plus>человеский синтаксис</plus>
+            <plus>синхронный импорт</plus>
+            <minus>не работает в браузере, необходимо собирать</minus>
+        </p>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Не JavaScript ресурсы</h2>
+        Подключать можно не только JavaScript
+        <script type="snippet" lang="javascript">
+            var css = require("css/style.css");
+            var tpl = require("templates/user.html");
+        </script>
+        <script type="snippet" lang="javascript">
+            defile(["templates/user.html"], function(tpl) {
+                // do smth
+            });
+        </script>
+        Как именно загружать ресурсы - решает рантайм
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Пути к ресурсам</h2>
+        <script type="snippet" lang="javascript">
+            var _ = require("lodash"); // module
+            var w = require("./subwidget.js"); // relative (fs)
+            var $ = require("https://code.jquery.com/jquery-3.0.0.min.js");
+            var blsht = require("/usr/local/blsht/index.js"); // blsht
+        </script>
+        Есть нюансы, которые зависят от рантайма и типа документа.
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Загрузчики</h2>
+        Модули, которые позволяют поменять логику загрузки
+        <script type="snippet" lang="javascript">
+            require("raw!./some.csv"); // data => string
+            require("raw!sass!./some.scss"); // parse sass
+            require("expose?jQuery!./jquery.js"); // set global var
+        </script>
+        <a href="https://webpack.github.io/docs/list-of-loaders.html">
+            https://webpack.github.io/docs/list-of-loaders.html
+        </a>
+        <a href="http://requirejs.org/docs/plugins.html">
+            http://requirejs.org/docs/plugins.html
+        </a>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Загрузчики IRL</h2>
+        <ul>
+            <li>Ленивая загрузка пака локализации</li>
+            <li>Использование внешнего jQuery, если есть</li>
+        </ul>
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Пакеты в JavaScript</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Что дают пакеты ?</h2>
+        <ul>
+            <li>Описание зависимостей</li>
+            <li>Версионирование</li>
+            <li>Репозитарий и менеджер пакетов</li>
+            <li>Повторное использование кода</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Варианты</h2>
+        <ul>
+            <li>NPM (*)</li>
+            <li>Bower</li>
+            <li>Jam</li>
+            <li>Copy-paste</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>NPM</h2>
+        <ul>
+            <li><code>npm install --save jquery</code></li>
+            <li><code>npm install --save-dev webpack</code></li>
+            <li><code>npm install</code> - установить зависимости текущего пакета</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Особенности NPM</h2>
+        <ul>
+            <li>Модули ставятся локально в директорию проекта</li>
+            <li>Модули сильно иерархичны и дублируются (в Node 6 - линейно)</li>
+            <li>node_modules - толстый, в репу класть нельзя</li>
+            <li>npm install при каждой сборке RPM</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>package.json</h2>
+        <script type="snippet" lang="javascript">
+        {
+          "name": "demo",
+          "version": "1.0.0",
+          "main": "dist/index.js",   // точка входа для require()
+          "scripts": {
+            "test": "echo \"Error: no test specified\" && exit 1"
+          },  // служебные скрипты
+          "dependencies": { // зависимости для работы
+            "jquery": "^3.1.0"
+          },
+          "devDependencies": { // зависимости для сборки
+            "gulp": "^3.9.1"
+          },
+          "author": "pupkin@mail.ru",
+          "license": "ISC" // хз
+        }
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Структура проекта</h2>
+        <script type="snippet" lang="plain">
+         |-- package.json
+         |-- webpack.config.js
+         |-- node_modules
+         |   |-- jquery
+         |   |-- lodash
+         |-- public
+         |   |-- sjs
+         |   |-- scss
+         |   |-- build  (js/css)
+         |-- lib
+         |-- etc
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Откуда можно устанавливать модули ?</h2>
+        TODO: readme npm install
+    </div></section>
+
+    <section class="slide shout"><div>
+        <h2>Сборка проекта</h2>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Системы сборки</h2>
+        <ul>
+            <li>r.js (Require.js) - только JS, только AMD</li>
+            <li>Browserify - только JS, только CommonJS</li>
+            <li>Grunt - не смотрел</li>
+            <li>Gulp - подходит для сборки мелких проектов</li>
+            <li>Webpack - рабочее решение</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <script type="snippet" lang="javascript">
+            module.exports = {
+                entry: {   // модули которые будут собраны
+                    'vendor': 'vendor.js',   // все сторонние библиотеки
+                    'main':   'main.js',     // JS код
+                    'style':  'style.scss',  // CSS (завернутый в JS)
+                },
+                resolve: {
+                    root: [ // где искать модули
+                        path.resolve(__dirname, 'public/sjs'),
+                        path.resolve(__dirname, 'public/scss'),
+                    ],
+                    modulesDirectories: [ 'node_modules' ],
+                },
+                output: { // куда складывать файлы
+                    path: path.resolve(__dirname, 'public/build/'),
+                    publicPath: '/build/', // префикс в URL
+                    filename: '[name].js',
+                },
+                module: { // правила загрузки
+                    loaders: [
+                        {
+                            test: require.resolve("jquery"),
+                            loader: "expose?$!expose?jQuery",
+                        },
+                        {
+                            test: /\.scss$/,
+                            loader: "style!css!sass",
+                        },
+                    ],
+                },
+                plugins: [
+                    new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js"),
+                    new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } }),
+                ]
+            };
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Загрузчики WebPack</h2>
+        <ul>
+            <li><code>file</code> - просто помещает файл в директорию build</li>
+            <li><code>url</code> - если меньше N байт, то в data-uri, иначе - file</li>
+            <li><code>sass</code> - преобразует SASS в CSS</li>
+            <li><code>css</code> - собирает CSS (@import, url())</li>
+            <li><code>style</code> - Упаковывает CSS в JS</li>
+            <li><code>export</code>,<code>import</code>,<code>expose</code> - shim</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Особенности WebPack</h2>
+        <ul>
+            <li>Вы определяете только имя начального модуля</li>
+            <li>По умолчанию начальный модуль - JavaScript</li>
+            <li>Умеет упаковать PNG в CSS в JavaScript</li>
+            <li>Умеет сам загружать Node модули (package.json)</li>
+            <li>Каждый начальный модуль содержи рантайм</li>
+            <li>Вы не управляете разделением на зависимости</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Code-spliting</h2>
+        <script type="snippet" lang="javascript">
+            var $ = require("jquery"); // статическая зависимость
+            var _;
+            if (Math.random() > 0.5) { // динамическая зависимость
+                _ = require("underscore");
+            } else {
+                _ = require("lodash");
+            }
+        </script>
+        Динамические зависимости вынуждают создавать новые чанки <br>
+        <strong>Используйте динамические зависмости для редких библиотек</strong>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>ALARM!</h2>
+        WebPack аккуратно следит за версиями пакетов.<br>
+        Поэтому если пакет A требует jQuery &lt; 2<br>
+        А пакет B требует jQuery &gt; 2<br>
+        У вас в бандлах будет 2 jquery.<br>
+        <strong>Проверяйте размер бандлов после отстоя пены!</strong>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Ускорение сборки</h2>
+        <script type="snippet" lang="shell">
+            export NODE_ENV=production
+            export NODE_PATH=/usr/lib/node_modules
+            npm install
+            webpack --bail
+        </script>
+    </div></section>
+
+    <div class="progress"><div></div></div>
+    <script src="../js/highlight.pack.js"></script>
+    <script src="../node_modules/shower-core/shower.min.js"></script>
+    <script src="../js/init.js"></script>
+
+</body>
+</html>
