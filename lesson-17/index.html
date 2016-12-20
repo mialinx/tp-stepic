@@ -159,6 +159,26 @@
     </div></section>
 
     <section class="slide"><div>
+        <h2>Nginx + http-push (старый модуль)</h2>
+        <script type="snippet" lang="nginx">
+            location /publish/ { 
+                set $push_channel_id $arg_cid; # id канала 
+                push_store_messages off;       # не храним сообщения
+                push_publisher;                # включаем отправку
+                allow   127.0.0.1;
+                deny    all;
+            } 
+
+            location /listen/ { 
+                push_subscriber_concurrency broadcast;  # всем!
+                set $push_channel_id $arg_cid; # id канала
+                default_type application/json; # MIME тип сообщения
+                push_subscriber;               # включаем доставку
+            }
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
         <h2>Плюсы и минусы Comet</h2>
         <ul>
             <plus>Поддержка всеми браузерами</plus>
