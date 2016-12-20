@@ -212,7 +212,7 @@
                 except User.DoesNotExist:
                     return None
                 hashed_pass = salt_and_hash(password)
-                if user.password != hashed_pass
+                if user.password != hashed_pass:
                     return None
                 session = Session()
                 session.key = generate_long_random_key()

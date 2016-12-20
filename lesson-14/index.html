@@ -95,7 +95,7 @@
                 message = forms.CharField(widget=forms.Textarea)
 
                 def clean(self):
-                    if is_spam(self.clean_data):
+                    if is_spam(self.cleaned_data):
                         raise forms.ValidationError(
                             u'Сообщение похоже на спам',
                             code='spam'
@@ -187,7 +187,7 @@
         <script type="snippet" lang="django">
             {% for e in form.non_field_errors %}
               <div class="alert alert-danger">{{ e }}</div>
-            {% endif %}
+            {% endfor %}
             <form class="form-horizontal" method="post" action="/blog/add/">
               <fieldset>
                 {% for field in form %}

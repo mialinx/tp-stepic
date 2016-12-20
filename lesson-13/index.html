@@ -251,9 +251,9 @@
                     qs = self.order_by('-id')
                     res = []
                     if since is not None:
-                        qs = qs.filter('id__lt'=since)
+                        qs = qs.filter(id__lt=since)
                     for p in qs[:1000]:
-                        if len(res):
+                        if len(res) == 0:
                             res.append(p)        
                         elif res[-1].category != p.category:
                             res.append(p)
