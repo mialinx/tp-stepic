@@ -29,7 +29,7 @@
             <li>Сетевой обмен в играх на HTML</li>
         </ul>
     </div></section>
-    
+
     <section class="slide"><div>
         <h2>Архитектура</h2>
         <p>&nbsp;</p>
@@ -134,7 +134,7 @@
         <p>
             В технологии <b>comet</b> сервер должен поддерживать одновременно открытыми большое количество соединений,
             причем каждое соединение находится в ожидании сообщений для него. По этой причине мы не можем использовать
-            классический application-сервер в роли comet-сервера. Для comet-сервера необходима отдельная технология, 
+            классический application-сервер в роли comet-сервера. Для comet-сервера необходима отдельная технология,
             например <b><a href="https://github.com/wandenberg/nginx-push-stream-module">nginx + push-stream-module</a></b>.
         </p>
     </div></section>
@@ -142,15 +142,15 @@
     <section class="slide"><div>
         <h2>Nginx + push-stream-stream</h2>
         <script type="snippet" lang="nginx">
-            location /publish/ { 
+            location /publish/ {
                 push_stream_publisher normal;       # включаем отправку
-                push_stream_channels_path $arg_cid; # id канала 
+                push_stream_channels_path $arg_cid; # id канала
                 push_stream_store_messages off;     # не храним сообщения
                 allow   127.0.0.1;
                 deny    all;
-            } 
+            }
 
-            location /listen/ { 
+            location /listen/ {
                 push_stream_subscriber long-polling;    # включаем доставку
                 push_stream_channels_path  $arg_cid;    # id канала
                 default_type application/json;          # MIME тип сообщения
@@ -161,15 +161,15 @@
     <section class="slide"><div>
         <h2>Nginx + http-push (старый модуль)</h2>
         <script type="snippet" lang="nginx">
-            location /publish/ { 
-                set $push_channel_id $arg_cid; # id канала 
+            location /publish/ {
+                set $push_channel_id $arg_cid; # id канала
                 push_store_messages off;       # не храним сообщения
                 push_publisher;                # включаем отправку
                 allow   127.0.0.1;
                 deny    all;
-            } 
+            }
 
-            location /listen/ { 
+            location /listen/ {
                 push_subscriber_concurrency broadcast;  # всем!
                 set $push_channel_id $arg_cid; # id канала
                 default_type application/json; # MIME тип сообщения
@@ -334,7 +334,7 @@
                 cid = request.GET.get('to')
                 text = request.GET.get('text')
                 body = json.dumps({ 'messages': [ text ] })
-                try: ## может быть долгим 
+                try: ## может быть долгим
                     resp = requests.post(puburl, params={'cid':cid}, data=body)
                     if resp.status_code == 200:
                         return HttpResponseAjax()
@@ -348,6 +348,15 @@
     <section class="slide"><div>
         <h2>Отправка через очередь</h2>
         <img src="pictures/queue.png" class="center">
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Софт для Real Time сообщений</h2>
+        <ul>
+            <li>Real Time Web Technologies Guide - <a href="https://www.leggetter.co.uk/real-time-web-technologies-guide/">https://www.leggetter.co.uk/real-time-web-technologies-guide/</a></li>
+            <li>Real Time libraries and frameworks - <a href="https://deepstream.io/blog/realtime-framework-overview/">https://deepstream.io/blog/realtime-framework-overview/</a></li>
+            <li>Centrifugo - <a href="https://github.com/centrifugal/centrifugo">https://github.com/centrifugal/centrifugo</a></li>
+        </ul>
     </div></section>
 
     <div class="progress"><div></div></div>
