@@ -184,16 +184,19 @@
 
     <section class="slide"><div>
         <h2>Декораторы в Python</h2>
-        <p>Декоратор – функция, преобразующая одну функцию в другую.</p>
+        <p style="margin-bottom: 20px;">Декоратор – функция, преобразующая одну функцию в другую.</p>
         <script type="snippet" lang="python">
             def double_it(func):
                 def tmp(*args):
                     return func(*args) * 2
-            return tmp
+                return tmp
 
             @double_it
-            def mult(a, b): 
+            def mult(a, b):
                 return a*b
+
+            # Добавление декоратора аналогично вызову
+            mult = double_it(mult)
         </script>
     </div></section>
 

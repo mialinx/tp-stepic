@@ -272,21 +272,21 @@
             # project/blog/urls.py
             from blog.views import post_list
 
-            urlpatterns = patterns('blog.views',
+            urlpatterns = [
                 url(r'^$', post_list, name='post-list'),
                 url(r'^category/(\d+)/$', 'category_view', 
                             name='post-list-by-category'),
                 url(r'^(?P<pk>\d+)/$', 'post_detail', 
                             name='post-detail'),
-            )
+            ]
         </script>
     </div></section>
 
     <section class="slide"><div>
         <h2>Используемые функции</h2>
         <ul>
+            <li><code>urlpatterns</code> - особая переменная list of url</li>
             <li><code>url</code> - для передачи именованных параметров</li>
-            <li><code>patterns</code> - для добавления префикса к именам</li>
             <li><code>include</code> - включение одного urls.py внутрь другого</li>
         </ul>
     </div></section>

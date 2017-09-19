@@ -103,7 +103,7 @@
               default_type  application/octet-stream;
               log_format    simple '$remote_addr $request $status';
               server {
-                listen        one.example.com;
+                listen        80;
                 server_name   one.example.com www.one.example.com;
                 access_log    /var/log/nginx.access_log simple;
                 location / {
