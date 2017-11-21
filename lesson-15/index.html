@@ -239,12 +239,13 @@
     <section class="slide"><div>
         <h2>Middleware в Django</h2>
         <p><b>Middleware</b> - это Python класс, в котором есть один из указанных ниже методов.
-            Список всех активных middleware указан в настройке <code>MIDDLEWARE_CLASSES</code>.
+            Список всех активных middleware указан в настройке <code>MIDDLEWARE</code>.
             <ul>
-                <li><code>process_request(request)</code></li>
-                <li><code>process_view(request, view, args, kwargs)</code></li>
-                <li><code>process_response(request, response)</code></li>
+                <li><code>__init__(get_response)</code></li>
+                <li><code>__call__(request)</code></li>
+                <li><code>process_view(request, func, args, kwargs)</code></li>
                 <li><code>process_exception(request, exception)</code></li>
+                <li><code>process_template_response(request, response)</code></li>
             </ul>
         </p>
     </div></section>
@@ -252,19 +253,21 @@
     <section class="slide"><div>
         <script type="snippet" lang="python">
             # project/project/middleware.py
-            class CheckSessionMiidleware(class): 
-                def process_request(request):
-                    try:
-                        sessid = request.COOKIE.get('sessid')
-                        session = Session.objects.get(
-                            key=sessid, 
-                            expires__gt=datetime.now(),
-                        )
-                        request.session = session
-                        request.user = session.user
-                    except Session.DoesNotExist:
-                        request.session = None
-                        request.user = None
+            class SimpleMiddleware(object):
+                def __init__(self, get_response):
+                    self.get_response = get_response
+                    # One-time configuration and initialization.
+
+                def __call__(self, request):
+                    # Code to be executed for each request before
+                    # the view (and later middleware) are called.
+
+                    response = self.get_response(request)
+
+                    # Code to be executed for each request/response after
+                    # the view is called.
+
+                    return response
         </script>
     </div></section>
 

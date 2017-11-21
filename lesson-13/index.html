@@ -96,7 +96,7 @@
                 return render(request, 'blog/post_details.html', {
                     'post':     post,
                     'category': post.category,
-                    'tags':     post.tags.all()[:],
+                    'tags':     list(post.tags.all()),
                     'vote':     vote,
                 })
         </script>

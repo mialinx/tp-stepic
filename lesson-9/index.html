@@ -217,16 +217,34 @@
         <h2>Относительные пути</h2>
         <script type="snippet" lang="python">
             import os.path
-            BASE_DIR = os.path.abspath(__file__)
-            BASE_DIR = os.path.dirname(BASE_DIR)
-            BASE_DIR = os.path.dirname(BASE_DIR)
+            # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+            BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-            TEMPLATE_DIRS = (
-                BASE_DIR + '/templates',
-            )
             STATIC_ROOT = BASE_DIR + '/static'
         </script>
     </div></section>
+
+    <section class="slide"><div>
+        <h2>Настройка шаблонов</h2>
+        <script type="snippet" lang="python">
+            TEMPLATES = [
+                {
+                    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                    'DIRS': [],
+                    'APP_DIRS': True,
+                    'OPTIONS': {
+                        'context_processors': [
+                            'django.template.context_processors.debug',
+                            'django.template.context_processors.request',
+                            'django.contrib.auth.context_processors.auth',
+                            'django.contrib.messages.context_processors.messages',
+                        ],
+                    },
+                },
+            ]
+        </script>
+    </div></section>
+
 
     <section class="slide"><div>
         <h2>Паттерн local_settings.py</h2>
