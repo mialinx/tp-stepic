@@ -116,6 +116,23 @@
     </div></section>
 
     <section class="slide"><div>
+        <h2>Структура заголовка</h2>
+        <img src="pictures/tcp_header.png">
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Флаги заголовка</h2>
+        <ul>
+            <li><b>URG</b>&nbsp;— поле «Указатель важности»</li>
+            <li><b>ACK</b>&nbsp;— поле «Номер подтверждения»</li>
+            <li><b>PSH</b>&nbsp;— пуш данных в приложение пользователя</li>
+            <li><b>RST</b>&nbsp;— оборвать соединения, сбросить буфер (очистка буфера)</li>
+            <li><b>SYN</b>&nbsp;— синхронизация номеров последовательности</li>
+            <li><b>FIN</b>&nbsp;— завершение соединения</li>
+        </ul>
+    </div></section>
+
+    <section class="slide"><div>
         <h2>Пример TCP клиента</h2>
         <script type="snippet" lang="python">
             import socket
