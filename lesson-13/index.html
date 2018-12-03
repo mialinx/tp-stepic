@@ -40,9 +40,9 @@
         <script type="snippet" lang="python">
             # blog/urls.py
             urlpatterns = [
-                url(r'^post/(?P<slug>\w+)/$', post_details, 
+                re_path(r'^post/(?P<slug>\w+)/$', post_details, 
                     name='post-details'),        
-                url(r'^tag/(?P<slug>\w+)/$', tag_details, 
+                re_path(r'^tag/(?P<slug>\w+)/$', tag_details, 
                     name='tag-details'),        
             ]
         </script>
@@ -64,7 +64,7 @@
                 except Post.DoesNotExist:
                     raise Http404
                 return render(request, 'blog/post_details.html', {
-                    'post':     post,
+                    'post': post,
                 })
         </script>
     </div></section>
@@ -79,7 +79,7 @@
             def post_details(request, slug):
                 post = get_object_or_404(Post, slug=slug)
                 return render(request, 'blog/post_details.html', {
-                    'post':     post,
+                    'post': post,
                 })
         </script>
     </div></section>
@@ -122,7 +122,7 @@
                 title = models.CharField(max_length=64)
 
                 def get_url(self):
-                    return reverse('blog:tag-details', 
+                    return reverse('blog:tag-details',
                         kwargs={'slug': self.slug})
 
                 def __unicode__(self):

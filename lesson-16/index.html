@@ -107,13 +107,11 @@
         <script type="snippet" lang="python">
             import json
 
-            class HttpResponseAjax(HttpResponse):
+            class HttpResponseAjax(JsonResponse):
                 def __init__(self, status='ok', **kwargs):
                     kwargs['status'] = status
-                    super(HttpResponseAjax, self).__init__(
-                        content = json.dumps(kwargs),
-                        content_type = 'application/json',
-                    )
+                    super(HttpResponseAjax, self).__init__(kwargs)
+
             class HttpResponseAjaxError(HttpResponseAjax):
                 def __init__(self, code, message):
                     super(HttpResponseAjaxError, self).__init__(

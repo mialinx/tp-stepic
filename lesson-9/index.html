@@ -186,15 +186,18 @@
         <script type="snippet" lang="python">
             # project/project/settings.py
             ROOT_URLCONF = 'project.urls'
+            INSTALLED_APPS = [
+                'django.contrib.admin',
+                'django.contrib.auth',
+                'django.contrib.contenttypes',
+                'django.contrib.sessions'
+            ]
             DATABASES = {
                 'default': {
                     'ENGINE': 'django.db.backends.sqlite3',
                     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
                 }
             }
-            TEMPLATE_DIRS = (
-                BASE_DIR + '/templates',
-            )
         </script>
     </div></section>
 
@@ -220,7 +223,7 @@
             # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
             BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-            STATIC_ROOT = BASE_DIR + '/static'
+            STATIC_ROOT = os.path.join(BASE_DIR, 'static')
         </script>
     </div></section>
 
@@ -277,9 +280,9 @@
             # project/project/urls.py
 
             urlpatterns = [
-                url(r'^$', 'blog.views.home', name='home'),
-                url(r'^', include('blog.urls')),
-                url(r'^admin/', include('admin.site.urls')),
+                path('', 'blog.views.home', name='home'),
+                re_path(r'^', include('blog.urls')),
+                re_path(r'^admin/', include('admin.site.urls')),
             ]
         </script>
     </div></section>
@@ -288,13 +291,15 @@
         <h2>Маршрутизация в приложении</h2>
         <script type="snippet" lang="python">
             # project/blog/urls.py
-            from blog.views import post_list
+            from blog import views
 
             urlpatterns = [
-                url(r'^$', post_list, name='post-list'),
-                url(r'^category/(\d+)/$', 'category_view', 
+                path('', views.post_list, name='post-list'),
+                path('profile/<int:id>/', views.profile, name='profile-by-id'),
+                path('profile/<username>/', views.profile, name='profile'),
+                re_path('^category/(\d+)/$', views.category_view,
                             name='post-list-by-category'),
-                url(r'^(?P<pk>\d+)/$', 'post_detail', 
+                re_path('^(?P<pk>\d+)/$', views.post_detail,
                             name='post-detail'),
             ]
         </script>
@@ -304,7 +309,8 @@
         <h2>Используемые функции</h2>
         <ul>
             <li><code>urlpatterns</code> - особая переменная list of url</li>
-            <li><code>url</code> - для передачи именованных параметров</li>
+            <li><code>path</code> - простые именованные параметры</li>
+            <li><code>re_path</code> - именованные параметры по регулярному выражению</li>
             <li><code>include</code> - включение одного urls.py внутрь другого</li>
         </ul>
     </div></section>
@@ -314,7 +320,7 @@
         <ul>
             <li>Слеш (<code>/</code>) в начале роутов не указывается</li>
             <li>Можно указывать как имя, так и саму view-функцию</li>
-            <li>Роуты описываются с помощью регулярных выражений</li>
+            <li>Роуты описываются с помощью регулярных выражений и патернов</li>
             <li>Можно и нужно разносить роуты по приложениям</li>
             <li>Можно и нужно создавать именованные роуты</li>
             <li>Одно действие – один роут – один контроллер</li>

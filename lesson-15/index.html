@@ -259,13 +259,15 @@
                     # One-time configuration and initialization.
 
                 def __call__(self, request):
-                    # Code to be executed for each request before
-                    # the view (and later middleware) are called.
+                    session = Session.objects.get(key=request.COOKIE.get('sessid'))
+                    if session and session.user:
+                        request.user = user
+                    else:
+                        request.user = None # or Anonymous
 
                     response = self.get_response(request)
 
-                    # Code to be executed for each request/response after
-                    # the view is called.
+                    # More code ...
 
                     return response
         </script>
@@ -290,7 +292,7 @@
 
     <section class="slide"><div>
         <h2>django.contrib.sessions</h2>
-        <p>Предоставляет поддержку сессий, в том числе <b>анонимных</b>. 
+        <p>Предоставляет поддержку сессий, в том числе <b>анонимных</b>.
            Позволяет хранить в сессии произвольные данные, а не только ID пользователя.
            Позволяет хранить сессии в различных хранилищах, например <b>Redis</b> или <b>Memcached</b>.
         </p>
