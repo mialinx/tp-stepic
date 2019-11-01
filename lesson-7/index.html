@@ -43,7 +43,7 @@
         <ul>
             <li>Конфиг <code>/etc/nginx/nginx.conf</code><br>
                 <code>include /etc/nginx/sites-enabled/*</code></li>
-            <li>Init-скрипт <code>/etc/init.d/nginx [start|stop|restart]</code></li>
+            <li>Init-скрипт <code>/etc/init.d/nginx {start|stop|restart|reload|status}</code></li>
             <li>PID-файл <code>/var/run/nginx.pid</code></li>
             <li>Error-лог <code>/var/log/nginx/error.log</code></li>
             <li>Access-лог <code>/var/log/nginx/access.log</code></li>
@@ -80,7 +80,7 @@
             <li>Динамическая загрузка модулей - LoadModule</li>
             <li>Этапы обработки запроса и модули</li>
             <li>Дополнительные директивы, контексты</li>
-            <li>Примеры: mod_mime, mod_mime_magic, mod_autoindex, mod_rewrite, mod_cgi, mod_perl, mod_gzip</li>
+            <li>Примеры: mod_mime, mod_mime_magic, mod_autoindex, mod_rewrite, mod_cgi, mod_lua, mod_perl, mod_gzip</li>
         </ul>
     </div></section>
 
@@ -140,7 +140,19 @@
             <li><code>location ~* \.jpg$</code></li>
             <li><code>location /img/</code></li>
         </ul>
-        При одинаковом приоритете используется тот location, что находится <b>выше</b> в конфиге.
+        При одинаковом приоритете используется тот location, что находится <b>выше</b> в конфиге.<br>
+        Примеры: <code>/img/1.jpg</code> <code>/img/2.jpg</code> <code>/img/2.png</code> <code>/pic/1.jpg</code>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Алгоритм выбора location</h2>
+        <ol>
+            <li>Ищем полное совпадение по <code>location = /img/1.jpg</code></li>
+            <li>Ищем максимальный префиксный location <code>location ^~ /pic/</code> или <code>location /img/</code></li>
+            <li>Если location содержит <code>^~</code>, то location найден</li>
+            <li>Проверяем все location с регулярным выражением <code>location ~* \.jpg$</code>, отдаем первый совпавший</li>
+            <li>Если ни одно регулярное выражение не подошло, отдаем location без спецификаторов из пункта 2</li>
+        </ol>
     </div></section>
 
     <section class="slide"><div>

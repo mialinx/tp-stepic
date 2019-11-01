@@ -125,7 +125,7 @@
                     return reverse('blog:tag-details',
                         kwargs={'slug': self.slug})
 
-                def __unicode__(self):
+                def __str__(self):
                     return self.title
         </script>
     </div></section>
@@ -180,7 +180,8 @@
         </ul>
         <h3>Методы</h3>
         <ul>
-            <li><code>page(n)</code> - получить n-тый объект <code>Page</code></li>
+            <li><code>page(n)</code> - n-тый объект <code>Page</code></li>
+            <li><code>get_page(n)</code> - n-тый объект <code>Page</code> обработка <code>PageNotAnInteger</code> <code>EmptyPage</code></li>
         </ul>
     </div></section>
 
