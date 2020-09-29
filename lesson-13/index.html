@@ -90,7 +90,7 @@
             def post_details(request, slug):
                 post = get_object_or_404(Post, slug=slug)
                 try:
-                    vote = post.votes.filter(user=request.user)[0]
+                    vote = post.votes.get(user=request.user)
                 except Vote.DoesNotExist:
                     vote = None
                 return render(request, 'blog/post_details.html', {

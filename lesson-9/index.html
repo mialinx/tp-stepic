@@ -254,7 +254,7 @@
         <script type="snippet" lang="python">
             # в конце project/settings.py
             try:
-                from ask_pupkin.local_settings import *
+                from project.local_settings import *
             except ImportError:
                 pass
         </script>
@@ -281,7 +281,7 @@
 
             urlpatterns = [
                 path('', 'blog.views.home', name='home'),
-                re_path(r'^', include('blog.urls')),
+                re_path(r'^blog/', include('blog.urls')),
                 re_path(r'^admin/', include('admin.site.urls')),
             ]
         </script>
@@ -308,7 +308,7 @@
     <section class="slide"><div>
         <h2>Используемые функции</h2>
         <ul>
-            <li><code>urlpatterns</code> - особая переменная list of url</li>
+            <li><code>urlpatterns</code> - особая переменная list of path</li>
             <li><code>path</code> - простые именованные параметры</li>
             <li><code>re_path</code> - именованные параметры по регулярному выражению</li>
             <li><code>include</code> - включение одного urls.py внутрь другого</li>

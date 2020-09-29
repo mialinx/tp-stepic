@@ -174,9 +174,11 @@
         <script type="snippet" lang="python">
             response = HttpResponse(html)
             response.set_cookie('visited', '1')
+            # Set-Cookie: visited=1
         </script>
         <script type="snippet" lang="python">
             is_visited = request.COOKIES.get('visited')
+            # Cookie: id=a3fWa; visited=1; test=aefw3
         </script>
     </div></section>
 
