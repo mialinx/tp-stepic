@@ -112,6 +112,7 @@
             cursor.execute(
                 "SELECT * FROM users WHERE email = '" + email + "'"
             )
+            # SELECT * FROM users WHERE email = '' OR '1'='1'
         </script>
         <script type="snippet" lang="python">
             cursor.execute(
@@ -137,6 +138,12 @@
             default_cur.execute("select * from tbl2 limit 10")
             another_cur = connections['another'].cursor()
             another_cur.execute("select * from tbl2 limit 10")
+
+            # settings.py
+            DATABASES = {
+                'default': {'ENGINE': ... },
+                'another': { ... }
+            }
         </script>
     </div></section>
 
@@ -272,6 +279,8 @@
             tags_manager = post.tags       # RelatedManager
             post.tags.all()                # [ Tags ]
             # использование обратного отношения
+            # ForeignKey.related_name
+            # ManyToManyField.related_name
             category.post_set.all()        # [ Post ]
             tag.post_set.all()             # [ Post ]
         </script>

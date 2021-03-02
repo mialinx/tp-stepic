@@ -223,22 +223,39 @@
     <section class="slide shout"><div>
         <h2>Class-based Views</h2>
     </div></section>
-
-    <!--
     <section class="slide"><div>
-        <h2>Паттерн template method</h2>
-        <p>
-            TODO:
-        </p>
+        <h2>TemplateView</h2>
+        <script type="snippet" lang="python">
+            # views.py
+            from django.views.generic.base import TemplateView
+
+            class HomePageView(TemplateView):
+                template_name = "home.html"
+
+                def get_context_data(self, **kwargs):
+                    context = super().get_context_data(**kwargs)
+                    context["additional_context"] = "some data"
+                    return context
+
+            # urls.py
+            urlpatterns = [
+                path('', HomePageView.as_view(), name='home'),
+            ]
+        </script>
     </div></section>
 
     <section class="slide"><div>
         <h2>Class-based Views</h2>
-        <p>
-            TODO: https://docs.djangoproject.com/en/1.9/topics/class-based-views/intro/
-        </p>
+        <ul>
+            <li><code>TemplateView</code> – рендеринг шаблона</li>
+            <li><code>RedirectView</code> – редирект</li>
+            <li><code>DetailView</code> - просмотр одной сущности</li>
+            <li><code>ListView</code> – просмотр листинга</li>
+            <li><code>FormView</code> – работа с формами</li>
+            <li>...</li>
+        </ul>
+        <a href="https://docs.djangoproject.com/en/3.1/ref/class-based-views/" target="_blank">Больше классов в документации</a>
     </div></section>
-    -->
 
     <section class="slide shout"><div>
         <h2>Шаблонизация</h2>

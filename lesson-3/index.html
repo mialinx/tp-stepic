@@ -58,7 +58,7 @@
             <li>Атрибуты – без сокращений: disabled=”disabled”</li>
             <li>Тэги всегда парные:  &lt;p&gt;&lt;/p&gt;</li>
             <li>Строгая вложенность: &lt;i&gt;&lt;b&gt;&lt;/b&gt;&lt;/i&gt;</li>
-            <li>id вместо name</li>
+            <li>id вместо name в #</li>
             <li>Необходим DOCTYPE</li>
         </ul>
     </div></section>
@@ -230,6 +230,10 @@
                 <li><code>mailto</code> - запуск почтового клиента</li>
                 <li><code>javascript</code> - выполнение JavaScript кода</li>
                 <li><code>#anchor</code> - прокрутка текущей страницы</li>
+                <script type="snippet" lang="html">
+                    <a name="anchor"></a>
+                    <div id="anchor"></div>
+                </script>
             </ul>
         </p>
     </div></section>
@@ -258,7 +262,7 @@
         <h2>Аттрибуты формы</h2>
         <ul>
             <li><code>action</code> - URL, на который будет отправлена форма</li>
-            <li><code>metod</code> - HTTP метод, GET или POST</li>
+            <li><code>method</code> - HTTP метод, GET или POST</li>
             <li><code>target</code> - имя окна браузера, в котором открыть результат</li>
             <li><code>enctype</code> - способ кодирования данных формы. По умолчанию - <code>application/x-www-form-urlencoded</code>.
                 Если форма содержит поля для ввода файлов, то должно быть <code>multipart/form-data</code>

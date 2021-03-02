@@ -158,12 +158,12 @@
         <h2>Необходимые модели</h2>
         <script type="snippet" lang="python">
             class User(models.Model):
-                login    = models.CharField(unique=True)
+                login = models.CharField(unique=True)
                 password = models.CharField()
-                name     = models.CharField()
+                name = models.CharField()
 
             class Session(models.Model):
-                key  = models.CharField(unique=True)
+                key = models.CharField(unique=True)
                 user = models.ForeignKey(User)
                 expires = models.DateTimeField()
         </script>

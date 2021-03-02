@@ -65,7 +65,7 @@
             # по другому полю
             try:
                 post = Post.objects.get(name="Python")
-            except  MultipleObjectsReturned:
+            except MultipleObjectsReturned:
                 post = None
         </script>
     </div></section>
@@ -107,7 +107,7 @@
             posts = posts.exclude(category_id=7)     # QuerySet
             posts = posts.order_by('rating')         # QuerySet
             posts = posts.reverse()                  # QuerySet
-            posts = posts[0:10]                      # [ Post ]
+            posts = posts[0:10]                      # [ Post ] offset 0 limit 10
         </script>
     </div></section>
 
@@ -129,8 +129,8 @@
             <li><code>create</code> - создание нового объекта</li>
             <li><code>update</code> - обновление всех подходящих объектов</li>
             <li><code>delete</code> - удаление всех подходящих объектов</li>
-            <li><code>get_or_create</code> - выборка объекта или его создание</li>
             <li><code>count</code> - выборка количества <code>COUNT(*)</code></li>
+            <li><code>get_or_create</code> - выборка объекта или его создание</li>
             <li><code>update_or_create</code> - обновление объекта или его создание</li>
         </ul>
     </div></section>
@@ -243,7 +243,7 @@
         <h2>Свои миграции</h2>
         <code>project/migration/2015-08-08-more-post-fields.py</code>
         <script type="snippet" lang="python">
-            #!/usr/bin/python2.7
+            #!/usr/bin/python3
             from django.core.management import setup_environ
             from project import settings
             setup_environ(settings)

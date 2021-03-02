@@ -81,7 +81,7 @@
             def messages(request):
                 cid = request.GET.get('cid')
                 since = request.GET.get('since', 0)
-                messages = Messages.filter(
+                messages = Messages.objects.filter(
                     cid = cid,
                     id__gt = since,
                 ).order_by('-id')

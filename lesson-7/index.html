@@ -159,7 +159,7 @@
         <h2>Отдача статических документов</h2>
         <script type="snippet" lang="nginx">
             location ~* ^.+\.(jpg|jpeg|gif|png)$ {
-                root        /www/images;
+                root /www/images;
             }
             location /sitemap/ {
                 alias /home/www/generated/;
