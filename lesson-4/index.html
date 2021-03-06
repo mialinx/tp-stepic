@@ -137,13 +137,16 @@
     <section class="slide"><div>
         <h2>Псевдоэлементы</h2>
         <ul>
-            <li><code>#el:after</code> ― виртуальный элемент сразу после <code>#el</code></li>
-            <li><code>#el:before</code> ― виртуальный элемент непосредственно перед <code>#el</code></li>
+            <li><code>#el::after</code> ― виртуальный элемент после <code>#el</code></li>
+            <li><code>#el::before</code> ― виртуальный элемент перед <code>#el</code></li>
         </ul>
         <script type="snippet" type="css">
-            .jack-sparrow:before {
+            .jack-sparrow::before {
                 content: "Captain ";
                 display: inline;
+            }
+            .jack-sparrow:hover::before {
+                color: red;
             }
         </script>
     </div></section>
