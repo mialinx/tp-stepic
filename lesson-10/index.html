@@ -50,10 +50,13 @@
         <script type="snippet" lang="python">
             # blog/urls.py
 
+            # /category/123/
             path_re('^category/(\d+)/$', 'category_view')
 
+            # /123/
             path_re('^(?P<pk>\d+)/$', 'post_detail')
 
+            # /123/
             path('<int:pk>/', 'post_detail')
         </script>
     </div></section>
@@ -66,7 +69,7 @@
             def category_view(request, pk=None):
                 # вывести все посты
 
-            def post_details(request, pk):
+            def post_detail(request, pk):
                 # вывести страницу поста
 
             def category_view(request, *args, **kwargs):
@@ -158,7 +161,7 @@
         <script type="snippet" lang="python">
             user_agent = request.META.get('HTTP_USER_AGENT')
             user_ip = request.META.get('HTTP_X_REAL_IP')
-            if user_ip in None:
+            if user_ip is None:
                 user_ip = request.META.get('REMOTE_ADDR')
         </script>
         <script type="snippet" lang="python">
@@ -292,7 +295,7 @@
     <section class="slide"><div>
         <h2>Синтаксис шаблонов</h2>
         <script type="snippet" lang="django">
-            <!-- templates/blog/post_details.html -->
+            <!-- templates/blog/post_detail.html -->
             <html>
                 <head>...</head>
                 <body>
@@ -312,7 +315,7 @@
             # project/blog/views.py
             from django.shortcuts import render
 
-            return render(request, 'blog/post_details.html', { 
+            return render(request, 'blog/post_detail.html', {
                 'post': post,
                 'comments': comments,
             })
