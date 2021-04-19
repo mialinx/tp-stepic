@@ -22,7 +22,7 @@
     <section class="slide"><div>
         <h2>Создание и изменение объектов</h2>
         <script type="snippet" lang="python">
-            from blog.models import Category, Post
+            from blog.models import Category
 
             # создание
             c = Category(title="Perl")
@@ -39,7 +39,7 @@
     <section class="slide"><div>
         <h2>Создание объектов со связями</h2>
         <script type="snippet" lang="python">
-            from blog.models import Category, Post
+            from blog.models import Category, Post, Tag
             
             t = Tag(title="easy"); t.save()
             c = Category(title="Python"); c.save()
@@ -49,7 +49,6 @@
             p.tags = Tag.objects.all()[0:3] # [ Tag ]
             p.save()
             p.tags.add(t)
-            p.save()
         </script>
     </div></section>
 
@@ -65,7 +64,7 @@
             # по другому полю
             try:
                 post = Post.objects.get(name="Python")
-            except MultipleObjectsReturned:
+            except Post.MultipleObjectsReturned:
                 post = None
         </script>
     </div></section>

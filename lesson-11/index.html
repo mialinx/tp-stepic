@@ -177,11 +177,11 @@
             cursor.execute('select * from users where age > 18')
             for user in cursor.fetchall():
                 pk, name, age = user
-                print name
+                print(name)
         </script>
         <script type="snippet" lang="python">
             for user in User.objects.filter(age__gt=18):
-                print user.name
+                print(user.name)
         </script>
     </div></section>
 
