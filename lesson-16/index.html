@@ -96,8 +96,8 @@
         <script type="snippet" lang="javascript">
             {
                 "status": "error",
-                "code":   "no_auth",
-                "message":"вы не авторизованы"
+                "code": "no_auth",
+                "message": "вы не авторизованы"
             }
         </script>
     </div></section>
@@ -105,17 +105,17 @@
     <section class="slide"><div>
         <h2>HttpResponseAjax</h2>
         <script type="snippet" lang="python">
-            import json
+            from django.http import JsonResponse
 
             class HttpResponseAjax(JsonResponse):
                 def __init__(self, status='ok', **kwargs):
                     kwargs['status'] = status
-                    super(HttpResponseAjax, self).__init__(kwargs)
+                    super().__init__(kwargs)
 
             class HttpResponseAjaxError(HttpResponseAjax):
                 def __init__(self, code, message):
-                    super(HttpResponseAjaxError, self).__init__(
-                        status = 'error', code = code, message = message
+                    super().__init__(
+                        status='error', code=code, message=message
                     )
         </script>
     </div></section>
@@ -131,8 +131,8 @@
                     return HttpResponseAjax(comment_id=comment.id)
                 else:
                     return HttpResponseAjaxError(
-                        code = "bad_params",
-                        message = form.errors.as_text(), 
+                        code="bad_params",
+                        message=form.errors.as_text(),
                     )
         </script>
     </div></section>
@@ -146,8 +146,8 @@
                         return view(request, *args, **kwargs)
                     elif request.is_ajax():
                         return HttpResponseAjaxError(
-                            code = "no_auth",
-                            message = u'Требуется авторизация',
+                            code="no_auth",
+                            message=u'Требуется авторизация',
                         )
                     else:
                         redirect('/login/?continue=' + request.get_full_path())
