@@ -173,8 +173,8 @@
                 headers = [
                     ('Content-Type', 'text/plain')
                 ] 
-                body = 'Hello, world!' 
-                start_response(status, headers )
+                body = b'Hello, world!'
+                start_response(status, headers)
                 return [ body ]
         </script>
     </div></section>

@@ -136,7 +136,7 @@
         <h2>Пример TCP клиента</h2>
         <script type="snippet" lang="python">
             import socket
-            req = "Hello tcp!"
+            req = b'Hello tcp!'
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect(('127.0.0.1', 1234))
             s.send(req)
@@ -166,11 +166,11 @@
         <h2>Как правильно читать данные из сокета ?</h2>
         <script type="snippet" lang="python">
             def myreceive(sock, msglen):
-                msg = ''
+                msg = b''
                 while len(msg) < msglen:
                     chunk = sock.recv(msglen-len(msg))
-                    if chunk == '':
-                        raise RuntimeError("broken")
+                    if chunk == b'':
+                        raise RuntimeError('broken')
                     msg = msg + chunk
                 return msg
         </script>
@@ -184,7 +184,7 @@
                 while totalsent < len(msg):
                     sent = sock.send(msg[totalsent:])
                     if sent == 0:
-                        raise RuntimeError("broken")
+                        raise RuntimeError('broken')
                     totalsent = totalsent + sent
         </script>
     </div></section>
