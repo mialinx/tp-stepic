@@ -66,10 +66,10 @@
         <script type="snippet" lang="python">
             # blog/views.py
 
-            def category_view(request, pk=None):
+            def category_view(request, pk):
                 # вывести все посты
 
-            def post_detail(request, pk):
+            def post_detail(request, pk=None):
                 # вывести страницу поста
 
             def category_view(request, *args, **kwargs):
@@ -299,7 +299,7 @@
                 <head>...</head>
                 <body>
                     <h1>{{ post.title|truncatechars:80 }}</h1>
-                    <p>{{ post.text }}></p>
+                    <p>{{ post.text }}</p>
                     {% for comment in comments %}
                         {% include "blog/comment.html" %}
                     {% endfor %}
@@ -407,7 +407,7 @@
     <section class="slide"><div>
         <h2>Context processors</h2>
         <p>Context processors - это функции, которые вызываются перед отрисовкой шаблона и могут добавить данных в контекст.</p>
-        Настройка <code>TEMPLATE_CONTEXT_PROCESSORS</code>:
+        Настройка <code>context_processors в TEMPLATES</code>:
         <ul>
             <li><code>django.template.context_processors.request</code> (request)</li>
             <li><code>django.template.context_processors.csrf</code> (csrf_token)</li>

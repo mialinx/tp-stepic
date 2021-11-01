@@ -338,12 +338,12 @@
         <script type="snippet" lang="python">
             from django.core.urlresolvers import reverse
             reverse('home')
-            reverse('category-view', args=(10,))
+            reverse('post-list-by-category', args=(10,))
             reverse('post-detail', kwargs={'pk': 7})
         </script>
         В шаблоне:
         <script type="snippet" lang="django">
-            {% url 'question-view' question.id %}
+            {% url 'profile-by-id' user.id %}
         </script>
     </div></section>
 
