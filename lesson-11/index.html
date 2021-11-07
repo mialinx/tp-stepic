@@ -63,12 +63,12 @@
         <p>Полное интерфейса для работы с СУБД в <a href="https://www.python.org/dev/peps/pep-0249/">PEP-0249</a></p>
         <script type="snippet" lang="python">
         import MySQLdb
-        db = MySQLdb.connect(host="localhost", user="joe",
+        connection = MySQLdb.connect(host="localhost", user="joe",
                             passwd="moonpie", db="thangs")
-        cursor = db.cursor()
+        cursor = connection.cursor()
         # запросы с использованием cursor
-        db.commit()
-        db.close()
+        connection.commit()
+        connection.close()
         </script>
     </div></section>
 
@@ -100,8 +100,6 @@
                       ("Dasha", 17 )
                   ]
             )
-            db.commit()
-            db.close()
         </script>
     </div></section>
 
@@ -165,9 +163,9 @@
         </p>
         <table>
             <tr><th>Django</th><th>SQL</th></tr>
-            <tr><td>класс Модели</td><td>Таблица</td></tr>
-            <tr><td>объект модели</td><td>строка таблицы</td></tr>
-            <tr><td>QuerySet</td><td>запрос</td></tr>
+            <tr><td>Класс Model</td><td>Таблица</td></tr>
+            <tr><td>Объект Model</td><td>Строка таблицы</td></tr>
+            <tr><td>QuerySet</td><td>Запрос</td></tr>
         </table>
     </div></section>
 
@@ -243,9 +241,10 @@
                 # еще поля...
 
                 category = models.ForeignKey(Category, 
-                        null=True, on_delete=models.SET_NULL)
+                    null=True, on_delete=models.SET_NULL)
 
-                status = models.OneToOneField(PostStatus)
+                status = models.OneToOneField(PostStatus,
+                    on_delete=models.CASCADE)
 
                 tags = models.ManyToManyField(Tag)
         </script>       
