@@ -51,10 +51,10 @@
             # blog/urls.py
 
             # /category/123/
-            path_re('^category/(\d+)/$', 'category_view')
+            re_path('^category/(\d+)/$', 'category_view')
 
             # /123/
-            path_re('^(?P<pk>\d+)/$', 'post_detail')
+            re_path('^(?P<pk>\d+)/$', 'post_detail')
 
             # /123/
             path('<int:pk>/', 'post_detail')
@@ -72,7 +72,7 @@
             def post_detail(request, pk=None):
                 # вывести страницу поста
 
-            def category_view(request, *args, **kwargs):
+            def post_detail(request, *args, **kwargs):
                 pk = args[0]
                 pk = kwargs['pk']
         </script>

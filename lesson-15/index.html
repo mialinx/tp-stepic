@@ -259,9 +259,12 @@
                     # One-time configuration and initialization.
 
                 def __call__(self, request):
-                    session = Session.objects.get(key=request.COOKIE.get('sessid'))
+                    session = Session.objects.filter(
+                        key=request.COOKIE.get('sessid'),
+                        expires__gt=datetime.now()
+                    ).first()
                     if session and session.user:
-                        request.user = user
+                        request.user = session.user
                     else:
                         request.user = None # or Anonymous
 
@@ -343,10 +346,10 @@
             Меры безопасности:
             <ul>
                 <li>Ключ сессии невозможно подобрать перебором</li>
-                <li><code>HttpOnly</code> флаг для сессионной cookie</li>
+                <li><code>HttpOnly</code> и <code>Secure</code> флаги для сессионной cookie</li>
                 <li>Привязка сессии к IP адресу</li>
                 <li>Ограничение сессий по времени</li>
-                <li>Запрос пароля при критических действиях: смене пароля и т.д.</li>
+                <li>Запрос пароля или второго фактора при критических действиях: смене пароля и т.д.</li>
             </ul>
         </p>
     </div></section>

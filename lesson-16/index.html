@@ -222,6 +222,7 @@
                     for domain in settings.CORS_WHITE_LIST:
                         if origin.endswith('.' + domain):
                             response['Access-Control-Allow-Origin'] = origin
+                            response['Access-Control-Allow-Сredentials'] = 'true'
                     return response
                 return view2
         </script> 
