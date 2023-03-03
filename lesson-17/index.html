@@ -41,7 +41,6 @@
         <ul>
             <li><b>Polling</b> - периодический опрос сервера</li>
             <li><b>Comet (Long polling)</b> - polling с долгоживущими запросами</li>
-            <li><b>Server Push</b> - бесконечный запрос</li>
             <li><b>WebSocket</b> - специализированный протокол</li>
         </ul>
     </div></section>
@@ -79,12 +78,12 @@
         <h2>Polling на сервере</h2>
         <script type="snippet" lang="python">
             def messages(request):
-                cid = request.GET.get('cid')
-                since = request.GET.get('since', 0)
+                cid = request.GET.get("cid")
+                since = request.GET.get("since", 0)
                 messages = Messages.objects.filter(
                     cid = cid,
                     id__gt = since,
-                ).order_by('-id')
+                ).order_by("-id")
                 messages = [ m.as_data() for m in messages ]
                 return HttpResponseAjax(messages = messages)
         </script>
@@ -159,26 +158,6 @@
     </div></section>
 
     <section class="slide"><div>
-        <h2>Nginx + http-push (старый модуль)</h2>
-        <script type="snippet" lang="nginx">
-            location /publish/ {
-                set $push_channel_id $arg_cid; # id канала
-                push_store_messages off;       # не храним сообщения
-                push_publisher;                # включаем отправку
-                allow   127.0.0.1;
-                deny    all;
-            }
-
-            location /listen/ {
-                push_subscriber_concurrency broadcast;  # всем!
-                set $push_channel_id $arg_cid; # id канала
-                default_type application/json; # MIME тип сообщения
-                push_subscriber;               # включаем доставку
-            }
-        </script>
-    </div></section>
-
-    <section class="slide"><div>
         <h2>Плюсы и минусы Comet</h2>
         <ul>
             <plus>Поддержка всеми браузерами</plus>
@@ -187,31 +166,6 @@
             <minus>Избыточные HTTP запросы</minus>
             <minus>Half-duplex</minus>
         </ul>
-    </div></section>
-
-    <section class="slide shout"><div>
-        <h2>Server push</h2>
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Server push - бесконечный запрос</h2>
-        <img src="pictures/push.png" class="center">
-    </div></section>
-
-    <section class="slide"><div>
-        <h2>Server push на клиенте</h2>
-        <script type="snippet" lang="plain">
-            <script>
-                function handle(message) {
-                    // любая логика
-                }
-            </scr&#8203;ipt>
-            <iframe src='/listen/?cid=123'></iframe>
-        </script>
-        Ответ сервера:
-        <script type="snippet" lang="plain">
-            <script>parent.handle({ message: 'hello' })</scr&#8203;ipt>
-        </script>
     </div></section>
 
     <section class="slide shout"><div>
@@ -329,13 +283,13 @@
         <script type="snippet" lang="python">
             import requests # pip install requests
             import json
-            puburl = 'http://127.0.0.1/publish/'
+            puburl = "http://127.0.0.1/publish/"
             def send_message(request):
-                cid = request.GET.get('to')
-                text = request.GET.get('text')
-                body = json.dumps({ 'messages': [ text ] })
+                cid = request.GET.get("to")
+                text = request.GET.get("text")
+                body = json.dumps({ "messages": [ text ] })
                 try: ## может быть долгим
-                    resp = requests.post(puburl, params={'cid':cid}, data=body)
+                    resp = requests.post(puburl, params={"cid":cid}, data=body)
                     if resp.status_code == 200:
                         return HttpResponseAjax()
                     else:

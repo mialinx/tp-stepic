@@ -62,6 +62,25 @@
     </div></section>
 
     <section class="slide"><div>
+        <h2>AJAX при помощи Fetch API</h2>
+        <script type="snippet" lang="javascript">
+            fetch('/blog/comments/add/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ post_id: 12, text: 'Занятная идея!' }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.status == 'ok') {
+                        console.log(data.comment_id);
+                    }
+                });
+        </script>
+    </div></section>
+
+    <section class="slide"><div>
         <h2>Особенности и ограничения AJAX</h2>
         <ul>
             <li><b>Same Origin Policy</b> - AJAX запросы можно отправлять только на свой домен. В современных браузерах есть CORS.</li>
@@ -75,11 +94,11 @@
         <h2>Загрузка HTML данных</h2>
         <script type="snippet" lang="python">
             def comments_list(request):
-                post_id = request.GET.get('post_id')
+                post_id = request.GET.get("post_id")
                 post = get_object_or_404(Post, post_id)
                 comments = paginate(request, post.comments)
-                return render(request, 'blog/comments.html', {
-                    'comments': comments
+                return render(request, "blog/comments.html", {
+                    "comments": comments
                 })
         </script>
         <p>В <code>blog/comments.html</code> отображается только HTML код комментариев, без окружающей страницы.</p>
@@ -108,14 +127,14 @@
             from django.http import JsonResponse
 
             class HttpResponseAjax(JsonResponse):
-                def __init__(self, status='ok', **kwargs):
-                    kwargs['status'] = status
+                def __init__(self, status="ok", **kwargs):
+                    kwargs["status"] = status
                     super().__init__(kwargs)
 
             class HttpResponseAjaxError(HttpResponseAjax):
                 def __init__(self, code, message):
                     super().__init__(
-                        status='error', code=code, message=message
+                        status="error", code=code, message=message
                     )
         </script>
     </div></section>
@@ -141,17 +160,15 @@
         <h2>Проверка авторизации в AJAX</h2>
         <script type="snippet" lang="python">
             def login_required_ajax(view):
-                def view2(request, *args, **kwargs):
+                def decorated_view(request, *args, **kwargs):
                     if request.user.is_authenticated():
                         return view(request, *args, **kwargs)
-                    elif request.is_ajax():
+                    else:
                         return HttpResponseAjaxError(
                             code="no_auth",
-                            message=u'Требуется авторизация',
+                            message="Требуется авторизация",
                         )
-                    else:
-                        redirect('/login/?continue=' + request.get_full_path())
-                return view2
+                return decorated_view
         </script> 
     </div></section>
 
@@ -214,17 +231,17 @@
         <h2>CORS на сервере</h2>
         <script type="snippet" lang="python">
             def allow_cors(view):
-                def view2(request, *args, **kwargs):
+                def decorated_view(request, *args, **kwargs):
                     response = view(request, *args, **kwargs)
-                    origin = request.META.get('HTTP_ORIGIN')
+                    origin = request.META.get("HTTP_ORIGIN")
                     if not origin:
                         return response
                     for domain in settings.CORS_WHITE_LIST:
-                        if origin.endswith('.' + domain):
-                            response['Access-Control-Allow-Origin'] = origin
-                            response['Access-Control-Allow-Сredentials'] = 'true'
+                        if origin.endswith("." + domain):
+                            response["Access-Control-Allow-Origin"] = origin
+                            response["Access-Control-Allow-Сredentials"] = "true"
                     return response
-                return view2
+                return decorated_view
         </script> 
     </div></section>
 

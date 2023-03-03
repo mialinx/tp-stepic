@@ -141,10 +141,10 @@
             def post_list_all(request):
                 posts = Post.objects.filter(is_published=True)
                 limit = request.GET.get('limit', 10)
-                page = request.GET.get('page', 1)
+                num_page = request.GET.get('page', 1)
                 paginator = Paginator(posts, limit)
                 paginator.baseurl = '/blog/all_posts/?page='
-                page = paginator.page(page)  # Page
+                page = paginator.page(num_page)  # Page
                 return render(request, 'blog/post_by_tag.html', {
                     'posts':  page.object_list,
                     'paginator': paginator, 'page': page,
@@ -220,12 +220,12 @@
                 if limit > 100:
                     limit = 10
                 try:
-                    page = int(request.GET.get('page', 1))
+                    num_page = int(request.GET.get('page', 1))
                 except ValueError:
                     raise Http404
                 paginator = Paginator(qs, limit)
                 try:
-                    page = paginator.page(page)
+                    page = paginator.page(num_page)
                 except EmptyPage:
                     page = paginator.page(paginator.num_pages)
                 return page

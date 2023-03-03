@@ -72,11 +72,11 @@
 
             def some_view(request):
                 # logic..
-                return HttpResponseRedirect('/new_url/')
+                return HttpResponseRedirect("/new_url/")
 
             # уязвимость open redirect
             def dangerous_view(request):
-                url = request.GET.get('continue')
+                url = request.GET.get("continue")
                 return HttpResponseRedirect(url)
         </script>
     </div></section>
@@ -97,8 +97,8 @@
                 def clean(self):
                     if is_spam(self.cleaned_data):
                         raise forms.ValidationError(
-                            u'Сообщение похоже на спам',
-                            code='spam'
+                            "Сообщение похоже на спам",
+                            code="spam"
                         )
         </script>
     </div></section>
@@ -110,10 +110,10 @@
                 message = forms.CharField(widget=forms.Textarea)
 
                 def clean_message(self):
-                    message = self.cleaned_data['message']
+                    message = self.cleaned_data["message"]
                     if not is_ethic(message):
                         raise forms.ValidationError(
-                            u'Сообщение не корректно', code=12)
+                            "Сообщение не корректно", code=12)
                     return message + \
                            "\nThank you for your attention."
 
@@ -164,8 +164,8 @@
                         return HttpResponseRedirect(url)
                 else:
                     form = AddPostForm()
-                return render(request, 'blog/post_add.html', {
-                    'form': form
+                return render(request, "blog/post_add.html", {
+                    "form": form
                 })
         </script>
     </div></section>
@@ -199,8 +199,7 @@
                 {% endfor %}
               </fieldset>
               <div class="form-actions">
-                <button type="submit" class="btn btn-primary">
-                Сохранить</button>
+                <button class="btn btn-primary">Сохранить</button>
               </div>
             </form>
         </script>
@@ -214,8 +213,8 @@
             class ArticleForm(ModelForm):
                 class Meta:
                     model = Post
-                    fields = ['title', 'content', 
-                              'category', 'tags']
+                    fields = ["title", "content", 
+                              "category", "tags"]
         </script>
         <p>Метод <code>save</code> уже определен и сохраняет модель <code>Meta.model</code></p>
     </div></section>
@@ -234,9 +233,9 @@
                     super(AddPostForm, self).__init__(**kwargs)
                 def clean(self):
                     if self._user.is_banned:
-                        raise ValidationError(u'Доступ ограничен')
+                        raise ValidationError("Доступ ограничен")
                 def save(self):
-                    self.cleaned_data['author'] = self._user
+                    self.cleaned_data["author"] = self._user
                     return Post.objects.create(**self.cleaned_data)
         </script>
     </div></section>
