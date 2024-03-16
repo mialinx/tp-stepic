@@ -78,7 +78,7 @@
 
     <section class="slide"><div>
         <script type="snippet" lang="plain">
-            [nuf@nuftop tmp]$ telnet www.ru 80
+            $ telnet www.ru 80
             Trying 217.112.35.75...
             Connected to www.ru.
             Escape character is '^]'.
@@ -86,9 +86,9 @@
             Host: www.ru
 
             HTTP/1.1 404 Not Found
-            Server: nginx/1.5.7
-            Date: Sun, 26 Jul 2015 14:43:18 GMT
-            Content-Type: text/html; charset=iso-8859-1
+            Server: nginx
+            Date: Wed, 06 Mar 2024 09:17:03 GMT
+            Content-Type: text/html; charset=utf-8
             Transfer-Encoding: chunked
             Connection: keep-alive
             Keep-Alive: timeout=20
@@ -103,15 +103,29 @@
             <code>curl -vv -d 'arg=1' -H'X-Token: 123' 'http://api.site.com/method/'</code></p>
     </div></section>
 
-    <section class="slide shout"><div>
-        <h2>Браузер</h2>
+    <section class="slide"><div>
+        <script type="snippet" lang="plain">
+            $ curl -vv 'https://api.site.com/method/?arg=1'
+            *   Trying 1.2.3.4:443...
+            * Connected to api.vkplay.ru (1.2.3.4) port 443
+            > GET /method/?arg=1 HTTP/2
+            > Host: api.site.com
+            > User-Agent: curl/8.4.0
+            > Accept: */*
+            >
+            < HTTP/2 200
+            < server: nginx
+            < date: Wed, 06 Mar 2024 09:17:03 GMT
+            < content-type: application/json; charset=utf-8
+            < content-length: 117
+            < cache-control: no-store
+            <
+            {"status":"ok"}
+        </script>
     </div></section>
 
-    <section class="slide"><div>
-        <p>Основное назначение - отображение HTML страниц.<br>
-           Однако, возможности современных браузеров огромны.<br>
-           Существуют операционные системы и 3D-игры, работающие внутри браузеров!</p>
-        <p><a href="http://www.evolutionoftheweb.com/">www.evolutionoftheweb.com</a></p>
+    <section class="slide shout"><div>
+        <h2>Браузер</h2>
     </div></section>
 
     <section class="slide"><div>
@@ -148,7 +162,7 @@
     <section class="slide"><div>
         <h2>Особенности современных Web-приложений</h2>
         <ul>
-            <li>UI находится на 1 или нескольких страницах (single page application / SPA)</li>
+            <li>UI находится на одной или нескольких страницах (Single Page Application - SPA)</li>
             <li>UI полностью статичен: HTML, CSS, JS - статические файлы</li>
             <li>Логика UI полностью работает на стороне клиента</li>
             <li>Используется шаблонизация в JavaScript</li>
