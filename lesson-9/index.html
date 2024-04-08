@@ -286,7 +286,7 @@
             # project/project/urls.py
 
             urlpatterns = [
-                path('', 'blog.views.home', name='home'),
+                path('', blog.views.home, name='home'),
                 re_path(r'^blog/', include('blog.urls')),
                 re_path(r'^admin/', include('admin.site.urls')),
             ]
