@@ -143,7 +143,6 @@
                 limit = request.GET.get('limit', 10)
                 num_page = request.GET.get('page', 1)
                 paginator = Paginator(posts, limit)
-                paginator.baseurl = '/blog/all_posts/?page='
                 page = paginator.page(num_page)  # Page
                 return render(request, 'blog/post_by_tag.html', {
                     'posts':  page.object_list,
@@ -162,7 +161,7 @@
               {% else %}
               <li>
               {% endif %}
-                <a href="{{ paginator.baseurl }}{{ p.number }}">
+                <a href="?page={{ p.number }}">
                 {{ p.number }}</a>
               </li>
             {% endfor %}
