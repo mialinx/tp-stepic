@@ -77,6 +77,27 @@
         </ul>
     </div></section>
 
+    <section class="slide"><div>
+        <script type="snippet" lang="bash">
+            $ dig example.ru
+            ;; QUESTION SECTION:
+             example.ru.         IN  A
+
+            ;; ANSWER SECTION:
+            example.ru.      60  IN  A   5.61.236.163
+
+            ;; AUTHORITY SECTION:
+            example.ru.      300 IN  NS  ns2.example.ru.
+            example.ru.      300 IN  NS  ns1.example.ru.
+
+            ;; ADDITIONAL SECTION:
+            ns1.example.ru.  600 IN  A     217.69.139.112
+            ns1.example.ru.  600 IN  AAAA  2a00:1148:db00::2
+            ns2.example.ru.  600 IN  A     94.100.180.138
+            ns2.example.ru.  600 IN  AAAA  2a00:1148:db00::1
+        </script>
+    </div></section>
+
     <section class="slide shout"><div>
         <h2>TCP</h2>
     </div></section>
@@ -103,7 +124,7 @@
     <section class="slide"><div>
         <h2>Стандартные TCP порты</h2>
         <ul>
-            <li>20,21 - FTP</li>
+            <li>20, 21 - FTP</li>
             <li>22 - SSH</li>
             <li>25 - SMTP</li>
             <li>80 - HTTP</li>
