@@ -134,12 +134,12 @@
 
     <section class="slide"><div>
         <h2>Приоритеты location в nginx</h2>
-        <ul>
+        <ol>
             <li><code>location = /img/1.jpg</code></li>
             <li><code>location ^~ /pic/</code></li>
             <li><code>location ~* \.jpg$</code></li>
             <li><code>location /img/</code></li>
-        </ul>
+        </ol>
         При одинаковом приоритете используется тот location, что находится <b>выше</b> в конфиге.<br>
         Примеры: <code>/img/1.jpg</code> <code>/img/2.jpg</code> <code>/img/2.png</code> <code>/pic/1.jpg</code>
     </div></section>

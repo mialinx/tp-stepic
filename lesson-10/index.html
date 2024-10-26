@@ -51,13 +51,13 @@
             # blog/urls.py
 
             # /category/123/
-            re_path('^category/(\d+)/$', 'category_view')
+            re_path(r'^category/(\d+)/$', views.category_view)
 
             # /123/
-            re_path('^(?P<pk>\d+)/$', 'post_detail')
+            re_path(r'^(?P<pk>\d+)/$', views.post_detail)
 
             # /123/
-            path('<int:pk>/', 'post_detail')
+            path('<int:pk>/', views.post_detail)
         </script>
     </div></section>
 
@@ -101,7 +101,7 @@
         <script type="snippet" lang="python">
             from django.http import HttpResponse
             # создание ответа
-            response = HttpResponse("<html>Hello world</html>")
+            response = HttpResponse('<html>Hello world</html>')
             # установка заголовков
             response['Age'] = 120
             # установка всех параметров
@@ -120,8 +120,8 @@
                 HttpResponseNotFound, HttpResponseForbidden, \
                 HttpResponsePermanentRedirect
 
-            redirect = HttpResponseRedirect("/")          # 302
-            redirect = HttpResponsePermanentRedirect("/") # 301
+            redirect = HttpResponseRedirect('/')          # 302
+            redirect = HttpResponsePermanentRedirect('/') # 301
             response = HttpResponseNotFound()             # 404
             response = HttpResponseForbidden()            # 403
         </script>
@@ -159,6 +159,7 @@
     <section class="slide"><div>
         <h2>Получение и установка HTTP заголовков</h2>
         <script type="snippet" lang="python">
+            # nginx.conf proxy_set_header X-Real-IP $remote_addr;
             user_agent = request.META.get('HTTP_USER_AGENT')
             user_ip = request.META.get('HTTP_X_REAL_IP')
             if user_ip is None:
@@ -233,11 +234,11 @@
             from django.views.generic.base import TemplateView
 
             class HomePageView(TemplateView):
-                template_name = "home.html"
+                template_name = 'home.html'
 
                 def get_context_data(self, **kwargs):
                     context = super().get_context_data(**kwargs)
-                    context["additional_context"] = "some data"
+                    context['additional_context'] = 'some data'
                     return context
 
             # urls.py
@@ -257,7 +258,7 @@
             <li><code>FormView</code> – работа с формами</li>
             <li>...</li>
         </ul>
-        <a href="https://docs.djangoproject.com/en/3.1/ref/class-based-views/" target="_blank">Больше классов в документации</a>
+        <a href="https://docs.djangoproject.com/en/5.1/ref/class-based-views/" target="_blank">Больше классов в документации</a>
     </div></section>
 
     <section class="slide shout"><div>
@@ -314,10 +315,12 @@
             # project/blog/views.py
             from django.shortcuts import render
 
-            return render(request, 'blog/post_detail.html', {
-                'post': post,
-                'comments': comments,
-            })
+            def post_detail(request):
+                # get post and comments
+                return render(request, 'blog/post_detail.html', {
+                    'post': post,
+                    'comments': comments,
+                })
         </script>
     </div></section>
     
@@ -335,14 +338,14 @@
 
     <section class="slide"><div>
         <h2>Доступ к свойствам и методам</h2>
-        Через точку можно получить свойство, метод, ключ либо индекс объекта:
+        <div>Через точку можно получить свойство, метод, ключ или индекс объекта:</div>
         <script type="snippet" lang="django">
             {{ object.content }}
             {{ name.strip }}
             {{ info.avatar }}
             {{ post_list.0 }}
         </script>
-        Передавать параметры методам запрещено:
+        <div>Передавать параметры методам запрещено:</div>
         <script type="snippet" lang="django">
             {{ post_list.order_by('id') }} <!-- ошибка -->
             {{ post_list.delete }}

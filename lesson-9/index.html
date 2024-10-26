@@ -225,6 +225,7 @@
             from pathlib import Path
 
             # Build paths inside the project like this: BASE_DIR / 'subdir'.
+            # __file__ = 'project/project/settings.py'
             BASE_DIR = Path(__file__).resolve().parent.parent
 
             STATIC_ROOT = BASE_DIR / 'static'
@@ -234,7 +235,7 @@
     <section class="slide"><div>
         <h2>Паттерн local_settings.py</h2>
         <script type="snippet" lang="python">
-            # в конце project/settings.py
+            # в конце project/project/settings.py
             try:
                 from project.local_settings import *
             except ImportError:
