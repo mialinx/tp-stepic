@@ -49,6 +49,7 @@
             <li>Логическое разделение сущностей</li>
             <li>Выделение синтетических первичных ключей</li>
             <li>Связи 1:N, N:1 реализуются через внешний ключ</li>
+            <li>Связи 1:1 реализуются через внешний ключ c unique index</li>
             <li>Связи N:M реализуются через промежуточную таблицу</li>
             <li>Атрибут с фиксированным числом значений – внешняя таблица либо поле типа enum</li>
         </ul>
@@ -66,6 +67,7 @@
         connection = MySQLdb.connect(host="localhost", user="joe",
                             passwd="moonpie", db="thangs")
         cursor = connection.cursor()
+        connection.begin()
         # запросы с использованием cursor
         connection.commit()
         connection.close()
@@ -132,15 +134,15 @@
             cur = connection.cursor()
             cur.execute("select * from tbl limit 10")
 
-            default_cur = connections['default'].cursor()
+            default_cur = connections["default"].cursor()
             default_cur.execute("select * from tbl2 limit 10")
-            another_cur = connections['another'].cursor()
+            another_cur = connections["another"].cursor()
             another_cur.execute("select * from tbl2 limit 10")
 
             # settings.py
             DATABASES = {
-                'default': {'ENGINE': ... },
-                'another': { ... }
+                "default": {"ENGINE": ... },
+                "another": { ... }
             }
         </script>
     </div></section>
@@ -172,7 +174,7 @@
     <section class="slide"><div>
         <h2>ORM vs SQL</h2>
         <script type="snippet" lang="python">
-            cursor.execute('select * from users where age > 18')
+            cursor.execute("select * from users where age > 18")
             for user in cursor.fetchall():
                 pk, name, age = user
                 print(name)
@@ -194,10 +196,10 @@
                 def __str__(self):
                     return self.title
                 def get_absolute_url(self):
-                    return '/post/{}/'.format(self.pk)
+                    return "/post/{}/".format(self.pk)
                 class Meta:
-                    db_table = 'blogposts'
-                    ordering = ['-creation_date']
+                    db_table = "blogposts"
+                    ordering = ["-creation_date"]
         </script>
     </div></section>
 
@@ -219,14 +221,29 @@
         <h2>Свойства полей</h2>
         <ul>
             <li><code>blank</code> - поле может быть пустым</li>
-            <li><code>null</code> - при этом хранится в базе как NULL</li>
+            <li><code>null</code> - поле допускает в базе значение NULL</li>
             <li><code>max_length</code> - максимальная длина поля</li>
-            <li><code>primary_key</code> - это поле - первичный ключ</li>
-            <li><code>unique</code> - поле уникально</li>
-            <li><code>db_index</code> - для этого поля нужен индекс в базе</li>
+            <li><code>primary_key</code> - поле - первичный ключ</li>
+            <li><code>unique</code> - для поля нужен уникальный индекс в базе</li>
+            <li><code>db_index</code> - для поля нужен индекс в базе</li>
             <li><code>default</code> - значение по-умолчанию</li>
             <li><code>choices</code> - варианты значений</li>
         </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>Использование Сhoices</h2>
+        <script type="snippet" lang="python">
+            from django.db import models
+
+            class Post(models.Model):
+                POST_CHOICES = [
+                    ("NE", "News"),
+                    ("AR", "Article"),
+                ]
+                title = models.CharField(max_length=255)
+                post_type = models.CharField(max_length=2, choices=POST_CHOICES)
+        </script>
     </div></section>
 
     <section class="slide shout"><div>

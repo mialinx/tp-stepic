@@ -80,7 +80,7 @@
             python_posts = Post.objects.filter(category=c)
 
             css_posts = Post.objects.filter(title__contains="css")
-            css_posts = css_posts.order_by('-rating')
+            css_posts = css_posts.order_by("-rating")
             css_posts = css_posts[10:20]
         </script>
     </div></section>
@@ -104,7 +104,7 @@
             posts = Post.objects                     # ModelManager
             posts = posts.filter(title__match="CSS") # QuerySet
             posts = posts.exclude(category_id=7)     # QuerySet
-            posts = posts.order_by('rating')         # QuerySet
+            posts = posts.order_by("rating")         # QuerySet
             posts = posts.reverse()                  # QuerySet
             posts = posts[0:10]                      # [ Post ] offset 0 limit 10
         </script>
@@ -120,6 +120,19 @@
             <li><code>distinct</code> - выборка уникальных значений</li>
             <li><code>select_related</code>,<code>prefetch_related</code> - выборка из нескольких таблиц</li>
         </ul>
+    </div></section>
+
+    <section class="slide"><div>
+        <h2>select_related и prefetch_related</h2>
+        <script type="snippet" lang="python">
+            posts = Post.objects.select_related("category")
+            # SELECT * FROM blog_post p LEFT JOIN blog_category c ON c.id = p.category_id;
+
+            posts = Post.objects.prefetch_related("category")
+            # SELECT * FROM blog_post;
+            # Get category_id list
+            # SELECT * FROM blog_category WHERE id IN (1, 4, 5);
+        </script>
     </div></section>
 
     <section class="slide"><div>
@@ -183,7 +196,7 @@
                 def published(self):
                     return self.filter(published=True)
                 def create_draft(self, **kwargs):
-                    kwargs['draft'] = True
+                    kwargs["draft"] = True
                     return self.create(**kwargs)
 
             class Post(models.Model):
